@@ -4,6 +4,7 @@ interface User {
   _id: mongoose.Schema.Types.ObjectId;
   username: string;
   email: string;
+  image: string;
   password: string;
 }
 
@@ -19,6 +20,11 @@ const userSchema = new mongoose.Schema<User>({
     unique: true,
   },
 
+  image: {
+    type: String,
+    default: "/assets/user.svg"
+  },
+
   password: {
     type: String,
     required: true,
@@ -26,3 +32,5 @@ const userSchema = new mongoose.Schema<User>({
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
+
+export default User;

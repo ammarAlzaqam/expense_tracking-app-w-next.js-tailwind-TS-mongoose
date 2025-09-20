@@ -1,3 +1,4 @@
+import ThemeProvider from "@/components/providers/ThemeProvider";
 import "./globals.css";
 
 export default function RootLayout({
@@ -6,8 +7,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className="">
+      <body className="bg-white dark:bg-black">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }
