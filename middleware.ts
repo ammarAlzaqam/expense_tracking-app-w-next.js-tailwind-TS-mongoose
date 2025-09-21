@@ -6,6 +6,7 @@ export async function middleware(req: NextRequest) {
   const isApiRoute = pathname.startsWith("/api");
 
   const data = await isAuthenticated(req);
+  console.log(data);
   if (!data.success) {
     if (isApiRoute) {
       return NextResponse.json(
@@ -25,7 +26,7 @@ export const config = {
     "/api/transaction/:path*",
     "/api/auth/me",
     "/dashboard/:path*",
-    // "/",
+    "/",
   ],
 };
 

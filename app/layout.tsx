@@ -1,5 +1,11 @@
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import "./globals.css";
+import ToasterProvider from "@/components/providers/ToasterProvider";
+
+export const metadata = {
+  title: "expense tracker",
+  description: "expense tracking app",
+};
 
 export default function RootLayout({
   children,
@@ -9,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="">
       <body className="bg-white dark:bg-black">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ToasterProvider>{children}</ToasterProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

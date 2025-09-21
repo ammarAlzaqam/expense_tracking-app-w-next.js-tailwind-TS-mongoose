@@ -45,7 +45,7 @@
   --color-light-3: #2e2e2e;
   --color-light-4: #3f3f3f;
 
-  --color-gray-1: #9aa4b0;
+  --color-gray-1: #646a72;
 }
 
 .dark {
@@ -61,8 +61,8 @@
   --color-dark-4: #1f1f22;
 
   --color-light-1: #ffffff;
-  --color-light-2: #e5e7eb;
-  --color-light-3: #7878a3;
+  --color-light-2: #d1d5db;
+  --color-light-3: #9ca3af;
   --color-light-4: #5c5c7b;
 
   --color-gray-1: #697c89;
@@ -72,10 +72,6 @@
   * {
     transition: color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease,
       border 0.3s ease;
-  }
-
-  body {
-    min-height: 2000px;
   }
 }
 
@@ -90,5 +86,27 @@
 
   .animate-open_close[data-state="close"] {
     @apply opacity-0 scale-0 rotate-45;
+  }
+}
+
+@layer components {
+  .form {
+    @apply w-full flex flex-col gap-4;
+  }
+
+  .form-input {
+    @apply focus-visible:!ring-0 border-none !bg-dark-4 text-light-2;
+  }
+
+  .form-label {
+    @apply text-small text-gray-1;
+  }
+
+  .form-btn {
+    @apply bg-primary-500/80 text-slate-200 cursor-pointer hover:bg-primary-500/60 uppercase;
+  }
+
+  .form-msg {
+    @apply text-logout-btn;
   }
 }
