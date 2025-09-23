@@ -1,54 +1,47 @@
-import { jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
+import { isAuthenticated } from "./lib/auth";
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   const isApiRoute = pathname.startsWith("/api");
+  const isAuthPage =
+    pathname.startsWith("/signin") || pathname.startsWith("/signup");
 
+  const isProtectedPage = pathname === "/" || pathname === "/dashboard";
   const data = await isAuthenticated(req);
-  console.log(data);
-  if (!data.success) {
+  if (data.success) {
+    if (isAuthPage) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+  } else {
     if (isApiRoute) {
       return NextResponse.json(
         { success: false, message: data.message },
         { status: 403 }
       );
     }
-
-    return NextResponse.redirect(new URL("/signin", req.url));
+    if (isProtectedPage) {
+      return NextResponse.redirect(new URL("/signin", req.url));
+    }
   }
 
-  return NextResponse.next();
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-user-id", data.userId!);
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {
   matcher: [
     "/api/transaction/:path*",
     "/api/auth/me",
-    "/dashboard/:path*",
+    "/signin",
+    "/signup",
+    "/dashboard",
     "/",
   ],
 };
-
-//! Is auth function
-async function isAuthenticated(req: NextRequest) {
-  try {
-    const token = req.cookies.get("token")?.value;
-    if (!token || !process.env.JWT_SECRET)
-      return { success: false, message: "Not Authorized: token not found" };
-
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(process.env.JWT_SECRET)
-    );
-
-    const userId = payload.userId as string;
-    if (!userId)
-      return { success: false, message: "Not Authorized: token not valid" };
-
-    return { success: true, userId };
-  } catch (error) {
-    console.error(`Not Authorized: ${error}`);
-    return { success: false, message: "Not Authorized" };
-  }
-}

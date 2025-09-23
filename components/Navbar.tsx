@@ -1,12 +1,26 @@
 "use client";
 
-import { LayoutDashboard, Moon, Sun } from "lucide-react";
+import { LayoutDashboard, LogOut, Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "./providers/ThemeProvider";
 import Link from "next/link";
+import { Logout } from "@/lib/actions/user.action";
+import { usePathname, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const { darkMode, setDarkMode } = useTheme();
+  const path = usePathname();
+  const route = useRouter();
+
+  const handleLogout = async () => {
+    const data = await Logout();
+    if (!data.success) return toast.error(data.message);
+
+    toast.success(data.message);
+    route.refresh();
+  };
+
   return (
     <header className="sticky w-full bg-dark-2 px-3 sm:px-5 py-3 flex items-center justify-between">
       {/*//! App logo & name */}
@@ -34,22 +48,33 @@ export default function Navbar() {
         </Link>
       </nav>
 
-      {/*//! Theme Switcher */}
-      <div
-        onClick={() => {
-          setDarkMode((prev: any) => !prev);
-          localStorage.setItem("theme", darkMode ? "light" : "dark");
-        }}
-        className="relative w-7 h-7"
-      >
-        <Moon
-          data-state={darkMode ? "close" : "open"}
-          className="animate-open_close !text-primary-500"
-        />
-        <Sun
-          data-state={darkMode ? "open" : "close"}
-          className="animate-open_close !text-secondary-500"
-        />
+      {/*//! Right buttons (theme, logout)  */}
+      <div className="flex gap-3 items-center">
+        {/*//* Theme Switcher */}
+        <div
+          onClick={() => {
+            setDarkMode((prev: any) => !prev);
+            localStorage.setItem("theme", darkMode ? "light" : "dark");
+          }}
+          className="relative w-7 h-7"
+        >
+          <Moon
+            data-state={darkMode ? "close" : "open"}
+            className="animate-open_close !text-primary-500"
+          />
+          <Sun
+            data-state={darkMode ? "open" : "close"}
+            className="animate-open_close !text-secondary-500"
+          />
+        </div>
+
+        {/*//* Logout btn */}
+        <button
+          onClick={handleLogout}
+          className="text-light-1 cursor-pointer hover:text-light-1/50"
+        >
+          <LogOut />
+        </button>
       </div>
     </header>
   );

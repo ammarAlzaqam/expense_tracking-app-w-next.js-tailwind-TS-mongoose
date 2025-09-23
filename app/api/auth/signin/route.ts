@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.log(`Failed to signin: ${error}`);
+    console.error(`Failed to signin: ${error}`);
     return NextResponse.json(
       { success: false, message: "Something went wrong" },
       { status: 500 }

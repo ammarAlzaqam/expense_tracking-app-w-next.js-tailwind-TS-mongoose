@@ -1,9 +1,13 @@
+import UserInfo from "@/components/shared/UserInfo";
+
 export default function HomePage() {
   return (
     <section>
-      <h1 className="text-black dark:text-white">
-        Home Page ( expense tracking app ) .
-      </h1>
+      <h1 className="text-heading1 text-light-1">Home</h1>
+
+      <div className="mt-10">
+        <UserInfo />
+      </div>
     </section>
   );
 }
