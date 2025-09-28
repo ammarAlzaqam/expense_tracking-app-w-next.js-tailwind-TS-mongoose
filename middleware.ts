@@ -20,7 +20,7 @@ export async function middleware(req: NextRequest) {
         { status: 403 }
       );
     }
-    if (isProtectedPage) {
+    if (!isAuthPage) {
       return NextResponse.redirect(new URL("/signin", req.url));
     }
   }
@@ -41,7 +41,8 @@ export const config = {
     "/api/auth/me",
     "/signin",
     "/signup",
-    "/dashboard",
     "/",
+    "/dashboard/:path*",
+    "/profile/:path*"
   ],
 };

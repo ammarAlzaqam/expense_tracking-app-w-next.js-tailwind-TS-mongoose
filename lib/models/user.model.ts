@@ -8,28 +8,33 @@ interface User {
   password: string;
 }
 
-const userSchema = new mongoose.Schema<User>({
-  username: {
-    type: String,
-    required: true,
-  },
+const userSchema = new mongoose.Schema<User>(
+  {
+    username: {
+      type: String,
+      required: true,
+    },
 
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
 
-  image: {
-    type: String,
-    default: "/assets/user.svg"
-  },
+    image: {
+      type: String,
+      default: "/assets/user.svg",
+    },
 
-  password: {
-    type: String,
-    required: true,
+    password: {
+      type: String,
+      required: true,
+    },
   },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 

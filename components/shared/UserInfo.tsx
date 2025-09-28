@@ -3,8 +3,9 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { Eye } from "lucide-react";
+import EditButton from "./EditButton";
 
-export default async function UserInfo() {
+export default async function UserInfo({ route }: { route: string }) {
   //! Get token from cookie
   const cookieStorage = await cookies();
   const token = cookieStorage.get("token")?.value;
@@ -36,7 +37,7 @@ export default async function UserInfo() {
               fill
               className={`rounded-full object-cover ${
                 image === "/assets/user.svg" && "p-2"
-              } bg-dark-3`}
+              } bg-dark-4 dark:bg-dark-3`}
             />
           </Link>
           {/*//* username, email */}
@@ -46,12 +47,17 @@ export default async function UserInfo() {
           </div>
         </div>
 
-        {/*//* View Link */}
-        <Link href="/profile">
-          <Button className="text-white cursor-pointer bg-primary-800 hover:bg-primary-800/80 max-xs:size-8">
-            <Eye className="size-4.5" /> <span className="max-xs:hidden">View</span>
-          </Button>
-        </Link>
+        {route === "/profile" ? (
+          <EditButton username={username} email={email} image={image} />
+        ) : (
+          //* View Link
+          <Link href="/profile">
+            <Button className="text-white cursor-pointer bg-primary-800 hover:bg-primary-800/80 max-xs:size-8">
+              <Eye className="size-4.5" />
+              <span className="max-xs:hidden">View</span>
+            </Button>
+          </Link>
+        )}
       </div>
     </section>
   );

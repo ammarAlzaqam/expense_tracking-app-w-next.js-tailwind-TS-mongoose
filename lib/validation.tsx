@@ -23,7 +23,21 @@ export const SignUpValidationSchema = z
 
 export const SigninValidationSchema = z.object({
   email: z.email({ message: "Invalid email" }),
-  password: z
+  password: z.string(),
+});
+
+export const EditDataValidationSchema = z.object({
+  username: z.string().min(3).max(30),
+  email: z.email(),
+});
+
+export const EditImageValidationSchema = z.object({
+  image: z.url(),
+});
+
+export const EditPasswordValidationSchema = z.object({
+  currentPassword: z.string(),
+  newPassword: z
     .string()
     .min(8, { message: "At least 8 chars" })
     .max(50, { message: "Max 50 chars" }),

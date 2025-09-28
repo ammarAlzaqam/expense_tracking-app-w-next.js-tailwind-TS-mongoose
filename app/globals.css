@@ -19,6 +19,7 @@
   --color-dark-2: var(--color-dark-2);
   --color-dark-3: var(--color-dark-3);
   --color-dark-4: var(--color-dark-4);
+  --color-glassmorphism: var(--color-glassmorphism);
 
   --color-light-1: var(--color-light-1);
   --color-light-2: var(--color-light-2);
@@ -36,6 +37,7 @@
   --color-blue: #0078cc;
   --color-logout-btn: #ff4b4b;
   --color-navbar-menu: rgba(255, 255, 255, 0.1);
+  --color-glassmorphism: rgba(255, 255, 255, 0.05);
 
   --color-dark-1: #ffffff;
   --color-dark-2: #e5e7eb;
@@ -57,6 +59,7 @@
   --color-blue: #0095f6;
   --color-logout-btn: #ff5a5a;
   --color-navbar-menu: #10101299;
+  --color-glassmorphism: #10101299;
 
   --color-dark-1: #000000;
   --color-dark-2: #121417;
@@ -80,7 +83,7 @@
 
 @layer utility {
   .animate-open_close {
-    @apply text-light-1 cursor-pointer absolute inset-0 transition duration-300 opacity-100 scale-100 rotate-0;
+    @apply transition duration-300 opacity-100 scale-100 rotate-0;
   }
 
   .animate-open_close[data-state="open"] {
@@ -93,6 +96,30 @@
 }
 
 @layer components {
+  /*//! Bars */
+  /*//* Topbar */
+  .topbar {
+    @apply fixed w-full bg-dark-2 px-5 py-3 flex items-center justify-between;
+  }
+
+  .topbar-link {
+    @apply flex items-center gap-1;
+  }
+
+  /*//* Bottombar */
+  .bottombar {
+    @apply md:hidden fixed bottom-0 w-full z-10 bg-glassmorphism backdrop-blur-lg p-4 xs:px-7 rounded-t-3xl;
+  }
+
+  .bottombar-container {
+    @apply flex items-center justify-between gap-5;
+  }
+
+  .bottombar-link {
+    @apply flex flex-col items-center gap-1 px-2 py-2.5 flex-1 rounded-lg hover:bg-dark-4;
+  }
+
+  /*//! Forms*/
   .form {
     @apply w-full flex flex-col gap-4;
   }

@@ -1,14 +1,15 @@
 "use client";
 
-import { LayoutDashboard, LogOut, Moon, Sun } from "lucide-react";
+import { Home, LayoutDashboard, LogOut, Moon, Sun, User } from "lucide-react";
 import Image from "next/image";
-import { useTheme } from "./providers/ThemeProvider";
+import { useTheme } from "../providers/ThemeProvider";
 import Link from "next/link";
 import { Logout } from "@/lib/actions/user.action";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { sidebarLinks } from "@/constants";
 
-export default function Navbar() {
+export default function Topbar() {
   const { darkMode, setDarkMode } = useTheme();
   const path = usePathname();
   const route = useRouter();
@@ -22,9 +23,9 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky w-full bg-dark-2 px-3 sm:px-5 py-3 flex items-center justify-between">
+    <header className="topbar">
       {/*//! App logo & name */}
-      <div className="flex items-center gap-1 sm:gap-2">
+      <div className="flex items-center gap-2">
         <div className="relative h-8 w-8 sm:h-11 sm:w-11">
           <Image
             src="/logo.png"
@@ -38,33 +39,52 @@ export default function Navbar() {
       </div>
 
       {/*//! links */}
-      <nav>
-        <Link
-          href="/dashboard"
-          className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-light-1 text-base flex items-center gap-1"
-        >
-          <LayoutDashboard className="size-5 text-primary-500" />{" "}
-          <span className="max-sm:hidden">Dashboard</span>
-        </Link>
+      <nav className="max-md:hidden absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+        <div className="flex items-center gap-8">
+          {sidebarLinks.map(({ Icon, route, label }) => {
+            const isActive = path === route;
+            return (
+              <Link
+                href={route}
+                key={label}
+                className={`
+                  bg-gradient-to-r from-primary-800 via-dark-4 to-light-1 
+                  bg-no-repeat bg-[length:0%_3px] bg-[position:0_100%] 
+                  p-1 topbar-link
+                  ${isActive && "bg-[length:100%_3px]"}
+              `}
+              >
+                <Icon className="size-5 text-primary-500" />{" "}
+                <span
+                  className={`text-light-1 text-base ${
+                    isActive && "text-primary-800"
+                  }`}
+                >
+                  {label}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
       {/*//! Right buttons (theme, logout)  */}
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-5 items-center">
         {/*//* Theme Switcher */}
         <div
           onClick={() => {
             setDarkMode((prev: any) => !prev);
             localStorage.setItem("theme", darkMode ? "light" : "dark");
           }}
-          className="relative w-7 h-7"
+          className="relative w-6 h-6"
         >
           <Moon
             data-state={darkMode ? "close" : "open"}
-            className="animate-open_close !text-primary-500"
+            className="cursor-pointer absolute inset-0 size-6 animate-open_close !text-primary-500"
           />
           <Sun
             data-state={darkMode ? "open" : "close"}
-            className="animate-open_close !text-secondary-500"
+            className="cursor-pointer absolute inset-0 size-6 animate-open_close !text-secondary-500"
           />
         </div>
 
