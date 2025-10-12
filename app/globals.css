@@ -35,9 +35,9 @@
   --color-secondary-500: #ffb620;
 
   --color-blue: #0078cc;
-  --color-logout-btn: #ff4b4b;
+  --color-logout-btn: #fc2a2a;
   --color-navbar-menu: rgba(255, 255, 255, 0.1);
-  --color-glassmorphism: rgba(255, 255, 255, 0.05);
+  --color-glassmorphism: #dfdffb99;
 
   --color-dark-1: #ffffff;
   --color-dark-2: #e5e7eb;
@@ -99,7 +99,7 @@
   /*//! Bars */
   /*//* Topbar */
   .topbar {
-    @apply fixed w-full bg-dark-2 px-5 py-3 flex items-center justify-between;
+    @apply z-20 fixed w-full bg-dark-2 px-5 py-3 flex items-center justify-between;
   }
 
   .topbar-link {
@@ -125,7 +125,7 @@
   }
 
   .form-input {
-    @apply focus-visible:!ring-0 border-none !bg-dark-4 text-light-2;
+    @apply focus-visible:!ring-0 w-full focus:outline-0 border-none !bg-dark-4 text-light-2;
   }
 
   .form-label {
@@ -139,4 +139,14 @@
   .form-msg {
     @apply text-logout-btn;
   }
+}
+
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
 }

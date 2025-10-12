@@ -6,6 +6,8 @@ interface User {
   email: string;
   image: string;
   password: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const userSchema = new mongoose.Schema<User>(
@@ -36,6 +38,6 @@ const userSchema = new mongoose.Schema<User>(
   }
 );
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model<User>("User", userSchema);
 
 export default User;

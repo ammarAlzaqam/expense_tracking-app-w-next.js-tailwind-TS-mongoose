@@ -1,6 +1,13 @@
-import { EditProfileData, EditProfileImage, EditProfilePassword } from "@/components/forms/EditProfileForm";
+import {
+  EditProfileData,
+  EditProfileImage,
+  EditProfilePassword,
+} from "@/components/forms/EditProfileForm";
 import {
   Aperture,
+  BadgeDollarSign,
+  BadgePlus,
+  ChartBarStacked,
   Home,
   LayoutDashboard,
   UserCircle,
@@ -44,5 +51,23 @@ export const EditProfileTabs = [
     label: "password",
     Icon: UserLock,
     EditForm: EditProfilePassword,
+  },
+];
+
+export const dashboardSidebarLinks = [
+  {
+    Icon: BadgeDollarSign,
+    route: "/dashboard",
+    label: "Transactions",
+  },
+  {
+    Icon: BadgePlus,
+    route: "/dashboard/create-transaction",
+    label: "Create Transaction",
+  },
+  {
+    Icon: ChartBarStacked,
+    route: "/dashboard/create-category",
+    label: "Add Category",
   },
 ];

@@ -42,7 +42,8 @@ export default function Topbar() {
       <nav className="max-md:hidden absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
         <div className="flex items-center gap-8">
           {sidebarLinks.map(({ Icon, route, label }) => {
-            const isActive = path === route;
+            const isActive =
+              (path.includes(route) && route !== "/") || path === route;
             return (
               <Link
                 href={route}

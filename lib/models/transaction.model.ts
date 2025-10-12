@@ -5,7 +5,10 @@ interface Transaction {
   name: string;
   amount: number;
   user: mongoose.Schema.Types.ObjectId;
+  category: mongoose.Schema.Types.ObjectId;
   startDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const transactionSchema = new mongoose.Schema<Transaction>(
@@ -23,9 +26,13 @@ const transactionSchema = new mongoose.Schema<Transaction>(
       ref: "User",
       required: true,
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
     startDate: {
       type: Date,
-      default: Date.now(),
+      default: new Date(),
     },
   },
   {
@@ -35,6 +42,6 @@ const transactionSchema = new mongoose.Schema<Transaction>(
 
 const Transaction =
   mongoose.models.Transaction ||
-  mongoose.model("Transaction", transactionSchema);
+  mongoose.model<Transaction>("Transaction", transactionSchema);
 
 export default Transaction;

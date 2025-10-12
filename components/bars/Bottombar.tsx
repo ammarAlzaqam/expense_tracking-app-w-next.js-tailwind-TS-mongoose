@@ -12,18 +12,20 @@ export default function Bottombar() {
     <div className="bottombar">
       <nav className="bottombar-container">
         {sidebarLinks.map(({ Icon, route, label }) => {
-          const isActive = pathname === route;
+          const isActive =
+            (pathname.includes(route) && route !== "/") || pathname === route;
           return (
             <Link
               key={label}
               href={route}
               className={`${
-                isActive && "!bg-primary-800"
+                isActive &&
+                "shadow-md shadow-primary-800 bg-dark-2 dark:!bg-dark-3/50"
               } bottombar-link`}
             >
               <Icon
-                className={`size-6 text-primary-500 ${
-                  isActive && "!text-light-1"
+                className={`size-6 text-light-1 ${
+                  isActive && "!text-primary-500"
                 }`}
               />
               <span className="text-light-1 text-subtle">{label}</span>

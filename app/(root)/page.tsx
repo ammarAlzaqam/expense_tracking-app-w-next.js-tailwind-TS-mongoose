@@ -1,6 +1,6 @@
 import UserInfo from "@/components/shared/UserInfo";
 
-export default function HomePage() {
+export default async function HomePage() {
   return (
     <section>
       <h1 className="text-heading1 text-light-1">Home</h1>
