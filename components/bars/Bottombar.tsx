@@ -18,17 +18,20 @@ export default function Bottombar() {
             <Link
               key={label}
               href={route}
-              className={`${
-                isActive &&
-                "shadow-md shadow-primary-800 bg-dark-2 dark:!bg-dark-3/50"
-              } bottombar-link`}
+              className={`bottombar-link  `}
             >
-              <Icon
-                className={`size-6 text-light-1 ${
-                  isActive && "!text-primary-500"
-                }`}
-              />
-              <span className="text-light-1 text-subtle">{label}</span>
+              <div className="relative">
+                <span className="absolute inset-0 flex items-center justify-center transition-all duration-300">
+                  <span
+                    className={`min-w-16 h-16 rounded-full ${
+                      isActive &&
+                      "bg-[radial-gradient(circle,rgba(25,210,170,0.4)_0%,rgba(25,210,170,0.1)_45%,transparent_70%)]"
+                    }`}
+                  />
+                </span>
+                <Icon className={`size-6 text-light-1`} />
+              </div>
+              <span className="text-light-2 text-subtle">{label}</span>
             </Link>
           );
         })}

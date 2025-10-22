@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, LayoutDashboard, LogOut, Moon, Sun, User } from "lucide-react";
+import { Home, LogOut, Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "../providers/ThemeProvider";
 import Link from "next/link";
@@ -8,16 +8,19 @@ import { Logout } from "@/lib/actions/user.action";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { sidebarLinks } from "@/constants";
+import { useUserStore } from "@/lib/zustand/userStore";
 
 export default function Topbar() {
   const { darkMode, setDarkMode } = useTheme();
   const path = usePathname();
   const route = useRouter();
+  const user = useUserStore((state) => state.user);
+  const clearUser = useUserStore((state) => state.clearUser);
 
   const handleLogout = async () => {
     const data = await Logout();
     if (!data.success) return toast.error(data.message);
-
+    clearUser();
     toast.success(data.message);
     route.refresh();
   };
@@ -26,16 +29,20 @@ export default function Topbar() {
     <header className="topbar">
       {/*//! App logo & name */}
       <div className="flex items-center gap-2">
-        <div className="relative h-8 w-8 sm:h-11 sm:w-11">
+        <div className="shrink-0 relative h-8 w-8 sm:h-11 sm:w-11">
           <Image
-            src="/logo.png"
+            src={user?.image || "/assets/user.svg"}
             alt="logo"
             fill
-            className="rounded-full object-cover"
+            className={`rounded-full object-cover ${
+              !user?.image && "p-1 bg-dark-2"
+            }`}
           />
         </div>
 
-        <p className="text-heading4 sm:text-heading3 text-light-1">Tracker</p>
+        <p className="text-heading4 sm:text-heading3 text-light-1 line-clamp-1">
+          {user?.username ?? ""}
+        </p>
       </div>
 
       {/*//! links */}

@@ -1,23 +1,50 @@
-import DashboardSidebar from "@/components/bars/DashboardSidebar";
 import TransactionCard from "@/components/cards/TransactionCard";
-import SearchInput from "@/components/shared/SearchInput";
 import { fetchAllCategories } from "@/lib/actions/category.action";
 import { fetchTransactions } from "@/lib/actions/transaction.action";
+import Category from "@/lib/models/category.model";
+import connectDB from "@/lib/mongoose";
+import { FaChevronDown, FaSort } from "react-icons/fa";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import ClearSelectionsButton from "@/components/shared/ClearSelectionsButton";
+import { HiPlus } from "react-icons/hi";
+import Sidebar from "@/components/bars/Sidebar";
+import FilterInputs from "@/components/inputs/filterInputs";
 
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: Promise<{ search: string }>;
+  searchParams: Promise<{
+    search: string;
+    range: "" | "<100" | "100-1000" | ">1000" | undefined;
+    category: string;
+    sortBy: "amount" | "startDate";
+    sortOrder: "1" | "-1";
+    fromDate: string;
+    toDate: string;
+  }>;
 }) {
-  const { search: searchString } = await searchParams;
+  const {
+    search: searchString,
+    range,
+    category,
+    sortBy,
+    sortOrder,
+    fromDate,
+    toDate,
+  } = await searchParams;
+  await connectDB();
+  const categoryData = await Category.findOne({ slug: category });
   const transactionPromise = fetchTransactions({
     pageNumber: 1,
     searchString,
     limit: 20,
-    category: "",
-    range: "",
-    sortBy: "startDate",
-    sortOrder: -1,
+    category: categoryData?._id || "",
+    range: range || "",
+    sortBy: sortBy || "startDate",
+    sortOrder: (parseInt(sortOrder) as 1 | -1) || -1,
+    fromDate: fromDate ? new Date(fromDate) : undefined,
+    toDate: toDate ? new Date(toDate) : undefined,
   });
 
   const categoriesPromise = fetchAllCategories();
@@ -29,20 +56,55 @@ export default async function DashboardPage({
 
   return (
     <section className="space-y-7">
-      <h1 className="text-heading1 text-light-1">Transactions</h1>
-
-      <SearchInput />
-
-      <div className="flex flex-wrap justify-between gap-x-2 gap-y-5">
-        {transactions.map((t) => (
-          <TransactionCard
-            key={t._id}
-            transaction={t}
-            categories={categories || []}
-            type="dashboard"
-          />
-        ))}
+      {/*//! Head Text & Down Button */}
+      <div className="flex items-center gap-3 justify-between">
+        <h1 className="text-heading1 text-light-1">Transactions</h1>
+        {/*//* Down button */}
+        <a href="#transaction">
+          <Button className="form-btn size-7">
+            <FaChevronDown />
+          </Button>
+        </a>
       </div>
+
+      <Sidebar categories={JSON.parse(JSON.stringify(categories))} />
+
+      {/*//! Create transaction float button */}
+      <Button
+        asChild
+        className="rounded-full text-primary-500 bg-primary-500/30 ring-2 ring-primary-500/50 backdrop-blur-lg size-10 shadow-md shadow-primary-500"
+      >
+        <Link
+          href="/dashboard/create-transaction"
+          className="z-50 fixed bottom-[84px] md:bottom-5 right-[15px] md:right-5"
+        >
+          <HiPlus className="size-8" />
+        </Link>
+      </Button>
+
+      {/*//! Filter Inputs */}
+      <FilterInputs categories={JSON.parse(JSON.stringify(categories))} />
+
+      {/*//! Divider */}
+      <div id="transaction" className="divider" />
+
+      {/*//! Transactions */}
+      {transactions.length ? (
+        <div className="flex flex-wrap justify-between gap-x-2 gap-y-5">
+          {transactions.map((t) => (
+            <TransactionCard
+              key={t._id}
+              transaction={t}
+              categories={categories || []}
+              type="dashboard"
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="text-light-4 text-body font-normal text-center">
+          No transactions
+        </p>
+      )}
     </section>
   );
 }

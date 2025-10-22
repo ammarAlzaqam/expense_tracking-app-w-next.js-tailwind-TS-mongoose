@@ -65,9 +65,4 @@ export const dashboardSidebarLinks = [
     route: "/dashboard/create-transaction",
     label: "Create Transaction",
   },
-  {
-    Icon: ChartBarStacked,
-    route: "/dashboard/create-category",
-    label: "Add Category",
-  },
 ];

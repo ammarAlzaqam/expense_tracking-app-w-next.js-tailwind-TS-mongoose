@@ -111,7 +111,9 @@ export default function TransactionCommands({
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="text-light-1 cursor-pointer">
           <div className="rounded-full">
-            <EllipsisVertical className="size-4" />
+            <EllipsisVertical
+              className={`${loading && "animate-caret-blink"} size-4`}
+            />
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent

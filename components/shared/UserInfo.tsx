@@ -1,27 +1,20 @@
-import { cookies } from "next/headers";
+"use client";
+
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import EditButton from "./EditButton";
+import { useUserStore } from "@/lib/zustand/userStore";
 
-export default async function UserInfo({ route }: { route: string }) {
-  //! Get token from cookie
-  const cookieStorage = await cookies();
-  const token = cookieStorage.get("token")?.value;
+export default function UserInfo({ route }: { route: string }) {
+  const user = useUserStore((state) => state.user);
 
-  //! Fetch user data.
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`, {
-    method: "GET",
-    cache: "no-store",
-    headers: {
-      Cookie: `token=${token}`,
-    },
-  });
+  if (!user) {
+    return null;
+  }
 
-  const {
-    user: { username, email, image },
-  } = await res.json();
+  const { image, username, email } = user;
 
   return (
     <section className="">
@@ -32,7 +25,7 @@ export default async function UserInfo({ route }: { route: string }) {
           {/*//* Image */}
           <Link href="/profile" className="relative h-15 w-15">
             <Image
-              src={image}
+              src={image || "/assets/user.svg"}
               alt="user-info"
               fill
               className={`rounded-full object-cover ${
@@ -42,8 +35,10 @@ export default async function UserInfo({ route }: { route: string }) {
           </Link>
           {/*//* username, email */}
           <div className="max-w-[150px] sm:max-w-[250px] break-words">
-            <h2 className="text-body-bold text-light-1 truncate">{username}</h2>
-            <h3 className="text-subtle text-light-2 truncate">{email}</h3>
+            <h2 className="text-body-bold text-light-1 truncate">
+              {username || ""}
+            </h2>
+            <h3 className="text-subtle text-light-2 truncate">{email || ""}</h3>
           </div>
         </div>
 

@@ -20,6 +20,7 @@
   --color-dark-3: var(--color-dark-3);
   --color-dark-4: var(--color-dark-4);
   --color-glassmorphism: var(--color-glassmorphism);
+  --color-border: var(--color-border);
 
   --color-light-1: var(--color-light-1);
   --color-light-2: var(--color-light-2);
@@ -38,8 +39,9 @@
   --color-logout-btn: #fc2a2a;
   --color-navbar-menu: rgba(255, 255, 255, 0.1);
   --color-glassmorphism: #dfdffb99;
+  --color-border: #4a4b4f;
 
-  --color-dark-1: #ffffff;
+  --color-dark-1: #d1d1d1;
   --color-dark-2: #e5e7eb;
   --color-dark-3: #d1d5db;
   --color-dark-4: #9ca3af;
@@ -60,16 +62,17 @@
   --color-logout-btn: #ff5a5a;
   --color-navbar-menu: #10101299;
   --color-glassmorphism: #10101299;
+  --color-border: #5e6063;
 
-  --color-dark-1: #000000;
-  --color-dark-2: #121417;
-  --color-dark-3: #101012;
-  --color-dark-4: #1f1f22;
+  --color-dark-1: #1c1d21;
+  --color-dark-2: #252830;
+  --color-dark-3: #212226;
+  --color-dark-4: #212226;
 
   --color-light-1: #ffffff;
-  --color-light-2: #d1d5db;
+  --color-light-2: #e2e3e5;
   --color-light-3: #9ca3af;
-  --color-light-4: #5c5c7b;
+  --color-light-4: #8a8b8d;
 
   --color-gray-1: #697c89;
 }
@@ -77,9 +80,57 @@
 @layer base {
   * {
     transition: color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease,
-      border 0.3s ease;
+      scale 0.3s ease, opacity 0.3s ease, rotate 0.3s ease;
+
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    overscroll-behavior: none;
   }
 }
+
+@utility no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+@utility finance-bg {
+  background: repeating-linear-gradient(
+    -50deg,
+    var(--color-dark-1) 0 20%,
+    var(--color-dark-3) 20% 80%,
+    var(--color-dark-1) 80% 100%
+  );
+}
+
+@utility finance-sub-bg {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-dark-1) 0% 50%,
+    var(--color-dark-3) 50% 100%
+  );
+}
+
+@utility finance-light {
+  margin: 0;
+}
+.finance-light::after {
+  content: "";
+  @apply absolute -top-5 left-1/2 -translate-x-1/2 w-1/2 h-1;
+  box-shadow: 0 55px 50px 1px #ffffff;
+}
+
+.finance-light::before {
+  content: "";
+  @apply absolute -bottom-5 left-1/2 -translate-x-1/2 w-1/2 h-1;
+  box-shadow: 0 55px 50px 1px #ffffff;
+}
+
 
 @layer utility {
   .animate-open_close {
@@ -96,10 +147,14 @@
 }
 
 @layer components {
+  .divider {
+    @apply w-full h-0.5 bg-dark-4/50;
+  }
+
   /*//! Bars */
   /*//* Topbar */
   .topbar {
-    @apply z-20 fixed w-full bg-dark-2 px-5 py-3 flex items-center justify-between;
+    @apply z-20 fixed w-full bg-dark-1 px-5 py-3 flex items-center justify-between;
   }
 
   .topbar-link {
@@ -108,15 +163,77 @@
 
   /*//* Bottombar */
   .bottombar {
-    @apply md:hidden fixed bottom-0 w-full z-10 bg-glassmorphism backdrop-blur-lg p-4 xs:px-7 rounded-t-3xl;
+    @apply md:hidden fixed bottom-0 w-full z-10 bg-dark-1 border-t-2 border-dark-4 py-2 px-4 xs:px-7;
   }
 
   .bottombar-container {
-    @apply flex items-center justify-between gap-5;
+    @apply flex items-center justify-evenly gap-5;
   }
 
   .bottombar-link {
-    @apply flex flex-col items-center gap-1 px-2 py-2.5 flex-1 rounded-lg hover:bg-dark-4;
+    @apply flex flex-col items-center gap-1 px-2 py-1 rounded-lg hover:bg-dark-4;
+  }
+
+  /*//! Sidebar  */
+  .sidebar {
+    @apply fixed z-[60] top-0 left-0 h-[100dvh] transition duration-300 
+          data-[state=false]:-translate-x-[85vw] data-[state=false]:sm:-translate-x-[400px];
+  }
+
+  .sidebar-overlay {
+    @apply transition-all duration-300 
+        z-[55] h-full fixed inset-0 bg-black/70
+        data-[state=false]:opacity-0 data-[state=false]:pointer-events-none;
+  }
+
+  .sidebar-aside {
+    @apply h-full w-[85vw] sm:w-[400px] p-3 bg-dark-2 transition duration-300 overflow-y-auto space-y-3
+        data-[state=false]:opacity-0 data-[state=false]:scale-95;
+  }
+
+  .sidebar-aside::-webkit-scrollbar {
+    width: 8px; /* عرض الـ scrollbar */
+  }
+
+  .sidebar-aside::-webkit-scrollbar-track {
+    background: #1a1a1a; /* لون خلفية التراك (الجزء الفاضي) */
+    border-radius: 10px;
+  }
+
+  .sidebar-aside::-webkit-scrollbar-thumb {
+    background-color: #444; /* لون الجزء اللي بيتحرك */
+    border-radius: 10px;
+    border: 2px solid #1a1a1a; /* فراغ صغير حوالين السهم */
+    transition: background-color 0.3s ease;
+  }
+
+  .sidebar-aside::-webkit-scrollbar-thumb:hover {
+    background-color: #666; /* لون أفتح لما تمر عليه الماوس */
+  }
+
+  .sidebar-aside_btn {
+    @apply fixed z-[60] size-10 top-0 sm:top-2 right-1 cursor-pointer p-2 rounded-xl transition duration-300
+        data-[state=false]:translate-y-16 data-[state=false]:sm:translate-y-16 data-[state=false]:bg-dark-1/50 data-[state=false]:backdrop-blur-md;
+  }
+
+  .sidebar-aside_link {
+    @apply flex items-center gap-5 py-3 px-5 rounded-full text-light-1 cursor-pointer
+        data-[state=true]:bg-primary-800/50;
+  }
+
+  .sidebar-aside_category-form {
+    @apply relative flex w-full items-center gap-5 py-3 px-5 rounded-full text-light-1
+        data-[state=true]:inset-shadow-sm data-[state=true]:inset-shadow-primary-500/80 data-[state=true]:text-primary-500 data-[state=true]:border data-[state=true]:border-primary-800/40;
+  }
+
+  .sidebar-aside_category-input {
+    @apply flex-1 text-body sm:text-heading4 text-light-1 line-clamp-1 focus-visible:!ring-0 w-full focus:outline-0 border-none
+        data-[state=false]:pointer-events-none;
+  }
+
+  .sidebar-aside_category-Edit {
+    @apply relative size-7 cursor-pointer transition duration-300
+        data-[state=false]:opacity-0 data-[state=false]:translate-x-5 data-[state=false]:scale-0;
   }
 
   /*//! Forms*/
@@ -125,7 +242,7 @@
   }
 
   .form-input {
-    @apply focus-visible:!ring-0 w-full focus:outline-0 border-none !bg-dark-4 text-light-2;
+    @apply focus-visible:!ring-0 w-full focus:outline-0 border-none !bg-dark-2 text-light-2;
   }
 
   .form-label {
@@ -138,6 +255,15 @@
 
   .form-msg {
     @apply text-logout-btn;
+  }
+
+  /*//!Finance */
+  .finance-card {
+    @apply text-center finance-bg p-5 border border-border rounded-xl space-y-2;
+  }
+
+  .finance-text {
+    @apply text-light-2 text-base sm:text-body tracking-wide uppercase;
   }
 }
 

@@ -27,7 +27,7 @@ module.exports = {
       heading4: [
         "20px",
         {
-          lightHeight: "140%",
+          lineHeight: "140%",
           fontWeight: "700",
         },
       ],

@@ -29,7 +29,7 @@ export default function TransactionCard({
   const defaultCategoryName = "Un categorized 🌐";
 
   return (
-    <article className="relative flex w-[100%] md:w-[48%] lg:w-[32%] flex-col gap-3 px-3 py-5 sm:p-5 rounded-xl bg-dark-3 border border-dark-2/40 shadow-lg shadow-primary-800/20 hover:shadow-xl">
+    <article className="relative flex w-[100%] md:w-[48%] lg:w-[32%] flex-col gap-3 px-3 py-5 sm:p-5 rounded-xl bg-dark-3 border border-dark-2 shadow-lg shadow-primary-800/20 hover:shadow-xl">
       {/*//! name, amount, Commands button */}
       <div className="flex justify-between items-start gap-2">
         {/*//* left-side */}
@@ -72,14 +72,14 @@ export default function TransactionCard({
       </div>
 
       {/*//! Category, Date */}
-      <div className="flex justify-between items-center text-base">
-        <div className="flex items-center gap-1.5 bg-dark-4 px-2.5 py-1 rounded-full">
-          <Tag className="w-4 h-4 text-primary-800 dark:text-primary-500" />
-          <p className="text-light-3/80">
+      <div className="flex justify-between items-center text-base gap-5">
+        <div className="flex items-center gap-1.5 bg-dark-2 px-2.5 py-1 rounded-full">
+          <Tag className="shrink-0 w-4 h-4 text-primary-800 dark:text-primary-500" />
+          <p className="text-light-3/80 line-clamp-1">
             {category?.name ?? defaultCategoryName}
           </p>
         </div>
-        <time className="text-gray-1">{format(startDate, "dd MMM yyyy")}</time>
+        <time className="text-gray-1 shrink-0">{format(startDate, "dd MMM yyyy")}</time>
       </div>
     </article>
   );

@@ -1,9 +1,10 @@
+import { X } from "lucide-react";
 import UpdateTransactionForm from "../forms/UpdateTransactionForm";
 
 type Category = {
   _id: string;
   name: string;
-}
+};
 interface UpdateTransactionProps {
   transactionId: string;
   name: string;
@@ -25,13 +26,21 @@ export default function UpdateTransaction({
   return (
     <div
       onClick={() => setShowUpdateModal(false)}
-      className="z-50 fixed inset-0 backdrop-blur-md bg-dark-1/60 flex items-center justify-center px-3 sm:px-10 py-5"
+      className="z-[100] fixed inset-0 backdrop-blur-md bg-dark-1/60 flex items-center justify-center px-3 sm:px-10 py-5"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-xl space-y-8 p-5 bg-dark-3 rounded-md"
+        className="relative w-full max-w-xl space-y-8 p-5 bg-dark-3 rounded-md"
       >
-        <h2 className="text-heading1 text-light-1">Update transaction</h2>
+        {/*//! close button */}
+        <X
+          onClick={() => setShowUpdateModal(false)}
+          className="absolute top-0 right-0 size-10 p-2 text-logout-btn cursor-pointer transition duration-300 hover:scale-110"
+        />
+
+        <h2 className="text-heading3 sm:text-heading1 text-light-1">
+          Update transaction
+        </h2>
 
         <UpdateTransactionForm
           transactionId={transactionId}

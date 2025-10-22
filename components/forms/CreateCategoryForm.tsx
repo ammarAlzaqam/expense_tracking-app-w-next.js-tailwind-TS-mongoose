@@ -17,28 +17,28 @@ import { Shell } from "lucide-react";
 import { useState } from "react";
 import z from "zod";
 import toast from "react-hot-toast";
-import { usePathname } from "next/navigation";
 import slugify from "slugify";
 import { createCategory } from "@/lib/actions/category.action";
-
-
 
 export default function CreateCategoryForm() {
   const [loading, setLoading] = useState(false);
   const form = useForm({
     defaultValues: {
       name: "",
-      slug: "",
     },
     resolver: zodResolver(createCategoryValidationSchema),
   });
 
   const onSubmit = async ({
     name,
-    slug,
   }: z.infer<typeof createCategoryValidationSchema>) => {
     try {
       setLoading(true);
+
+      const slug = slugify(name, {
+        lower: true,
+        strict: true,
+      });
 
       const data = await createCategory({ name, slug, path: "/dashboard" });
       if (!data.success) {
@@ -65,30 +65,6 @@ export default function CreateCategoryForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel className="form-label">Name</FormLabel>
-              <FormControl>
-                <Input
-                  className="form-input"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    const slug = slugify(e.target.value, {
-                      lower: true,
-                      strict: true,
-                    });
-                    form.setValue("slug", slug, { shouldValidate: true });
-                  }}
-                />
-              </FormControl>
-              <FormMessage className="form-msg" />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="slug"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="form-label">Slug</FormLabel>
               <FormControl>
                 <Input className="form-input" {...field} />
               </FormControl>

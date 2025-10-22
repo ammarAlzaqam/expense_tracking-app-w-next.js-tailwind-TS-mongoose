@@ -59,22 +59,26 @@ export async function createTransaction({
 }
 
 interface FetchTransactionsParams {
-  pageNumber: number;
-  searchString: string;
-  limit: number;
-  category: string;
-  range: "" | "<100" | "100-1000" | ">1000";
+  pageNumber?: number;
+  searchString?: string;
+  limit?: number;
+  category?: string;
+  range?: "" | "<100" | "100-1000" | ">1000";
   sortBy: "startDate" | "amount";
   sortOrder: 1 | -1;
+  fromDate?: Date | null;
+  toDate?: Date | null;
 }
 export async function fetchTransactions({
-  pageNumber,
-  searchString,
-  limit,
-  category,
-  range,
-  sortBy,
-  sortOrder,
+  pageNumber = 1,
+  searchString = "",
+  limit = 20,
+  category = "",
+  range = "",
+  sortBy = "startDate",
+  sortOrder = -1,
+  fromDate = null,
+  toDate = null,
 }: FetchTransactionsParams) {
   try {
     const headerStore = await headers();
@@ -110,9 +114,16 @@ export async function fetchTransactions({
         query.amount = { $gt: 1000 };
         break;
       }
-
       default: {
       }
+    }
+
+    if (fromDate && toDate) {
+      query.startDate = { $gte: fromDate, $lte: toDate };
+    } else if (fromDate) {
+      query.startDate = { $gte: fromDate };
+    } else if (toDate) {
+      query.startDate = { $lte: toDate };
     }
 
     const sortOptions: Record<string, 1 | -1> = {};
@@ -212,6 +223,18 @@ export async function deleteTransaction(transactionId: string, path: string) {
     };
   } catch (error) {
     console.error("Delete transaction error", error);
+    return {
+      success: false,
+      message: "Something went wrong: Please try again",
+    };
+  }
+}
+
+export async function getUserFinanceSummary() {
+  try {
+    await connectDB();
+  } catch (error) {
+    console.error("get user finance error: ", error);
     return {
       success: false,
       message: "Something went wrong: Please try again",

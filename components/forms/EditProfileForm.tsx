@@ -26,6 +26,8 @@ import {
   updateProfilePassword,
 } from "@/lib/actions/user.action";
 import { LoaderPinwheel, TriangleAlert } from "lucide-react";
+import { useUserStore } from "@/lib/zustand/userStore";
+import { deleteUploadthingFile } from "@/lib/actions/uploadthing.action";
 
 interface User {
   username: string;
@@ -38,6 +40,7 @@ export function EditProfileImage({ image }: User) {
   // const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
   const path = usePathname();
+  const setUser = useUserStore((state) => state.setUser);
 
   const form = useForm({
     defaultValues: {
@@ -52,6 +55,8 @@ export function EditProfileImage({ image }: User) {
   ) => {
     try {
       setLoading(true);
+      const oldImage = image;
+
       const imgRes = await startUpload(files);
       if (imgRes && imgRes[0]) {
         imageChange(imgRes[0].ufsUrl);
@@ -66,6 +71,13 @@ export function EditProfileImage({ image }: User) {
         toast.error(data.message);
         return;
       }
+
+      if (oldImage && oldImage.includes("/f/")) {
+        const fileKey = oldImage.split("/f/")[1];
+        await deleteUploadthingFile(fileKey);
+      }
+
+      setUser(data?.user);
       toast.success(data.message);
     } catch (error) {
       console.error(error);
@@ -135,6 +147,8 @@ export function EditProfileImage({ image }: User) {
 export function EditProfileData({ username, email }: User) {
   const [loading, setLoading] = useState(false);
   const path = usePathname();
+  const setUser = useUserStore((state) => state.setUser);
+
   const form = useForm({
     defaultValues: {
       username,
@@ -157,6 +171,7 @@ export function EditProfileData({ username, email }: User) {
         toast.error(data.message);
         return;
       }
+      setUser(data?.user);
       toast.success(data.message);
     } catch (error) {
       console.error(error);

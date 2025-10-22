@@ -220,7 +220,7 @@ export function SelectInput({
       <SelectTrigger className="form-input w-full">
         <SelectValue placeholder="Without category" />
       </SelectTrigger>
-      <SelectContent className="text-light-2 bg-dark-2 border border-dark-2/50">
+      <SelectContent className="z-[120] text-light-2 bg-dark-2 border border-dark-2/50">
         <SelectGroup>
           <SelectLabel className="text-gray-1">{label}</SelectLabel>
           {selectItems.map((item) => (

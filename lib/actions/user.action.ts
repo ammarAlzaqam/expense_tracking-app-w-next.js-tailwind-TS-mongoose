@@ -28,9 +28,13 @@ export async function updateProfileImg(image: string, path: string) {
       };
 
     await connectDB();
-    const user = await User.findByIdAndUpdate(userId, {
-      image,
-    });
+    const user = await User.findByIdAndUpdate(
+      userId,
+      {
+        image,
+      },
+      { new: true }
+    ).lean();
     if (!user)
       return {
         success: false,
@@ -38,7 +42,11 @@ export async function updateProfileImg(image: string, path: string) {
       };
 
     revalidatePath(path);
-    return { success: true, message: "Profile photo updated successfully" };
+    return {
+      success: true,
+      user: JSON.parse(JSON.stringify(user)),
+      message: "Profile photo updated successfully",
+    };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Failed to update profile photo" };
@@ -64,10 +72,14 @@ export async function updateProfileData({
       };
 
     await connectDB();
-    const user = await User.findByIdAndUpdate(userId, {
-      username,
-      email,
-    });
+    const user = await User.findByIdAndUpdate(
+      userId,
+      {
+        username,
+        email,
+      },
+      { new: true }
+    ).lean();
     if (!user)
       return {
         success: false,
@@ -75,7 +87,11 @@ export async function updateProfileData({
       };
 
     revalidatePath(path);
-    return { success: true, message: "Profile data updated successfully" };
+    return {
+      success: true,
+      user: JSON.parse(JSON.stringify(user)),
+      message: "Profile data updated successfully",
+    };
   } catch (error) {
     console.error(error);
     return {
