@@ -42,7 +42,10 @@ export default function Finance({
 
       <div className="grid grid-cols-2 gap-4">
         {/*//! Net */}
-        <div data-state={grid} className="finance-light relative finance-card col-span-2">
+        <div
+          data-state={grid}
+          className="finance-light relative finance-card col-span-2"
+        >
           <h1 className="text-heading1 text-primary-500">
             {formattedAmount(netBalance)}
           </h1>
@@ -79,4 +82,4 @@ export default function Finance({
       </div>
     </>
   );
-} 
+}
