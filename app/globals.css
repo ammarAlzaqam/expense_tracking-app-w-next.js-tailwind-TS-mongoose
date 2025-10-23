@@ -155,7 +155,7 @@
 
 @layer components {
   .divider {
-    @apply w-full h-0.5 bg-dark-4/50;
+    @apply w-full h-0.5 bg-dark-4/50 dark:bg-dark-2;
   }
 
   /*//! Bars */

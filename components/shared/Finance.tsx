@@ -4,6 +4,9 @@ import { GiWideArrowDunk } from "react-icons/gi";
 import { CiGrid41 } from "react-icons/ci";
 import { CiGrid2H } from "react-icons/ci";
 import { useState } from "react";
+import { GoArrowUpRight } from "react-icons/go";
+import { GoArrowDown } from "react-icons/go";
+import { MdMonetizationOn } from "react-icons/md";
 
 export default function Finance({
   income,
@@ -42,7 +45,12 @@ export default function Finance({
 
       <div className="grid grid-cols-2 gap-4">
         {/*//! Net */}
-        <div data-state={grid} className="finance-light relative finance-card col-span-2">
+        <div
+          data-state={grid}
+          className="z-2 finance-light relative finance-card col-span-2"
+        >
+          <MdMonetizationOn className="z-1 size-28 text-light-1/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+
           <h1 className="text-heading1 text-primary-500">
             {formattedAmount(netBalance)}
           </h1>
@@ -51,10 +59,12 @@ export default function Finance({
 
         {/*//! Income */}
         <div
-          className={`finance-card finance-sub-bg p-4
+          className={`relative z-2 finance-card finance-sub-bg p-4
           ${!grid && "col-span-2"}
         `}
         >
+          <GoArrowUpRight className="-z-1 size-32 text-green-500/10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+
           <h3 className="finance-text font-normal text-small sm:text-base">
             Income
           </h3>
@@ -65,10 +75,12 @@ export default function Finance({
 
         {/*//! Expenses */}
         <div
-          className={`finance-card finance-sub-bg p-4
+          className={`relative z-2 finance-card finance-sub-bg p-4
           ${!grid && "col-span-2"}
         `}
         >
+          <GoArrowDown className="-z-1 size-28 text-red-400/10 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+
           <h3 className="finance-text font-normal text-small sm:text-base">
             Expenses
           </h3>
