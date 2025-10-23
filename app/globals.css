@@ -85,10 +85,10 @@
     scroll-behavior: smooth;
   }
 
-  /* html,
+  html,
   body {
     overscroll-behavior: none;
-  } */
+  }
 
   ::selection {
     background: var(--color-primary-500);
@@ -102,6 +102,31 @@
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
+}
+
+@utility custom-scrollbar {
+  margin: 0px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* عرض الـ scrollbar */
+  height: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1a1a1a; /* لون خلفية التراك (الجزء الفاضي) */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #444; /* لون الجزء اللي بيتحرك */
+  border-radius: 10px;
+  border: 2px solid #1a1a1a; /* فراغ صغير حوالين السهم */
+  transition: background-color 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #666; /* لون أفتح لما تمر عليه الماوس */
 }
 
 @utility finance-bg {
@@ -196,26 +221,6 @@
   .sidebar-aside {
     @apply h-full w-[85vw] sm:w-[400px] p-3 bg-dark-2 transition duration-300 overflow-y-auto space-y-3
         data-[state=false]:opacity-0 data-[state=false]:scale-95;
-  }
-
-  .sidebar-aside::-webkit-scrollbar {
-    width: 8px; /* عرض الـ scrollbar */
-  }
-
-  .sidebar-aside::-webkit-scrollbar-track {
-    background: #1a1a1a; /* لون خلفية التراك (الجزء الفاضي) */
-    border-radius: 10px;
-  }
-
-  .sidebar-aside::-webkit-scrollbar-thumb {
-    background-color: #444; /* لون الجزء اللي بيتحرك */
-    border-radius: 10px;
-    border: 2px solid #1a1a1a; /* فراغ صغير حوالين السهم */
-    transition: background-color 0.3s ease;
-  }
-
-  .sidebar-aside::-webkit-scrollbar-thumb:hover {
-    background-color: #666; /* لون أفتح لما تمر عليه الماوس */
   }
 
   .sidebar-aside_btn {

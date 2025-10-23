@@ -15,7 +15,7 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   return (
-    <html lang="en" className="bg-dark-1 text-light-1">
+    <html lang="en" className="dark bg-dark-1 text-light-1">
       <body>
         <ThemeProvider>
           <ToasterProvider>{children}</ToasterProvider>

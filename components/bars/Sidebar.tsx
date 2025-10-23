@@ -83,7 +83,7 @@ const Aside = ({
   const pathname = usePathname();
 
   return (
-    <aside data-state={open} className="sidebar-aside">
+    <aside data-state={open} className="sidebar-aside custom-scrollbar">
       {/*//! Title */}
       <h3 className="translate-x-1.5 text-heading3 sm:text-heading2 text-light-1">
         Mora Tracker

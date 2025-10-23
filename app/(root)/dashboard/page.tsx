@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import ClearSelectionsButton from "@/components/shared/ClearSelectionsButton";
 import { HiPlus } from "react-icons/hi";
 import FilterInputs from "@/components/inputs/filterInputs";
+import { PaginationTransactions } from "@/components/shared/Pagination";
 
 export default async function DashboardPage({
   searchParams,
@@ -21,6 +22,7 @@ export default async function DashboardPage({
     sortOrder: "1" | "-1";
     fromDate: string;
     toDate: string;
+    pageNumber: string;
   }>;
 }) {
   const {
@@ -31,12 +33,13 @@ export default async function DashboardPage({
     sortOrder,
     fromDate,
     toDate,
+    pageNumber,
   } = await searchParams;
   await connectDB();
   const categoryData = await Category.findOne({ slug: category });
 
-  const {transactions, nofPages} = await fetchTransactions({
-    pageNumber: 1,
+  const { transactions, nofPages } = await fetchTransactions({
+    pageNumber: parseInt(pageNumber || "1"),
     searchString,
     limit: 20,
     category: categoryData?._id || "",
@@ -60,7 +63,6 @@ export default async function DashboardPage({
         </a>
       </div>
 
-
       {/*//! Create transaction float button */}
       <Button
         asChild
@@ -80,16 +82,17 @@ export default async function DashboardPage({
       {/*//! Divider */}
       <div id="transaction" className="divider" />
 
-      {/*//! Transactions */}
       {transactions.length ? (
-        <div className="flex flex-wrap justify-between gap-x-2 gap-y-5">
-          {transactions.map((t) => (
-            <TransactionCard
-              key={t._id}
-              transaction={t}
-              type="dashboard"
-            />
-          ))}
+        <div className="space-y-10">
+          {/*//! Transactions */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-2 gap-y-5">
+            {transactions.map((t) => (
+              <TransactionCard key={t._id} transaction={t} type="dashboard" />
+            ))}
+          </div>
+
+          {/*//! Pagination */}
+          <PaginationTransactions nofPages={9} />
         </div>
       ) : (
         <p className="text-light-4 text-body font-normal text-center">

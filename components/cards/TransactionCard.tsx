@@ -27,7 +27,7 @@ export default function TransactionCard({
   const defaultCategoryName = "Un categorized 🌐";
 
   return (
-    <article className="relative flex w-[100%] md:w-[48%] lg:w-[32%] flex-col gap-3 px-3 py-5 sm:p-5 rounded-xl bg-dark-3 border border-dark-2 shadow-lg shadow-primary-800/20 hover:shadow-xl">
+    <article className="relative flex flex-col gap-3 px-3 py-5 sm:p-5 rounded-xl bg-dark-3 border border-dark-2 shadow-lg shadow-primary-800/20 hover:shadow-xl">
       {/*//! name, amount, Commands button */}
       <div className="flex justify-between items-start gap-2">
         {/*//* left-side */}
