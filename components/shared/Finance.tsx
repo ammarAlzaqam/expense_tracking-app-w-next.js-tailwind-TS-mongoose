@@ -1,9 +1,9 @@
 "use client";
 import { formattedAmount } from "@/lib/utils";
 import { GiWideArrowDunk } from "react-icons/gi";
-import { CiGrid41, CiGrid2H } from "react-icons/ci";
+import { CiGrid41 } from "react-icons/ci";
+import { CiGrid2H } from "react-icons/ci";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 
 export default function Finance({
   income,
@@ -19,13 +19,12 @@ export default function Finance({
   return (
     <>
       <div className="flex items-center justify-between gap-3">
-        {/* Title */}
+        {/*//! Title */}
         <h1 className="flex gap-3 items-center text-heading1 text-light-1 uppercase">
           <GiWideArrowDunk />
           <span>finance</span>
         </h1>
-
-        {/* Grid toggle button */}
+        {/*//! Grid button */}
         <button
           className="relative size-7"
           onClick={() => setGrid((prev) => !prev)}
@@ -41,32 +40,20 @@ export default function Finance({
         </button>
       </div>
 
-      {/* Use Framer Motion layout transition only */}
-      <motion.div
-        layout
-        transition={{ type: "spring", stiffness: 80, damping: 18 }}
-        className={grid ? "grid grid-cols-2 gap-4" : "grid grid-cols-1 gap-4"}
-      >
-        {/* Net Balance */}
-        <motion.div
-          layout
-          transition={{ type: "spring", stiffness: 80, damping: 18 }}
-          data-state={grid}
-          className="finance-light relative finance-card col-span-2"
-        >
+      <div className="grid grid-cols-2 gap-4">
+        {/*//! Net */}
+        <div data-state={grid} className="finance-light relative finance-card col-span-2">
           <h1 className="text-heading1 text-primary-500">
             {formattedAmount(netBalance)}
           </h1>
           <h3 className="finance-text">Net Balance</h3>
-        </motion.div>
+        </div>
 
-        {/* Income */}
-        <motion.div
-          layout
-          transition={{ type: "spring", stiffness: 80, damping: 18 }}
-          className={`finance-card finance-sub-bg p-4 ${
-            !grid && "col-span-2"
-          }`}
+        {/*//! Income */}
+        <div
+          className={`finance-card finance-sub-bg p-4
+          ${!grid && "col-span-2"}
+        `}
         >
           <h3 className="finance-text font-normal text-small sm:text-base">
             Income
@@ -74,15 +61,13 @@ export default function Finance({
           <h2 className="text-heading3 overflow-auto no-scrollbar text-blue">
             {formattedAmount(income)}
           </h2>
-        </motion.div>
+        </div>
 
-        {/* Expenses */}
-        <motion.div
-          layout
-          transition={{ type: "spring", stiffness: 80, damping: 18 }}
-          className={`finance-card finance-sub-bg p-4 ${
-            !grid && "col-span-2"
-          }`}
+        {/*//! Expenses */}
+        <div
+          className={`finance-card finance-sub-bg p-4
+          ${!grid && "col-span-2"}
+        `}
         >
           <h3 className="finance-text font-normal text-small sm:text-base">
             Expenses
@@ -90,8 +75,8 @@ export default function Finance({
           <h2 className="text-heading3 text-secondary-500 overflow-auto no-scrollbar">
             {formattedAmount(expenses)}
           </h2>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </>
   );
-}
+} 
