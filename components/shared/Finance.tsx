@@ -14,7 +14,7 @@ export default function Finance({
   expenses: number;
   netBalance: number;
 }) {
-  const [grid, setGrid] = useState(false);
+  const [grid, setGrid] = useState(true);
 
   return (
     <>
