@@ -5,10 +5,17 @@ import { useCategoriesStore } from "@/lib/zustand/categoriesStore";
 import { useUserStore } from "@/lib/zustand/userStore";
 import { useEffect } from "react";
 
+type Category = {
+  _id: string;
+  name: string;
+  slug: string;
+};
 export default function ZustandProvider({
   children,
+  categories,
 }: {
   children: React.ReactNode;
+  categories: Category[];
 }) {
   const setUser = useUserStore((state) => state.setUser);
   const clearUser = useUserStore((state) => state.clearUser);
@@ -38,26 +45,13 @@ export default function ZustandProvider({
       }
     };
 
-    const getCategories = async () => {
-      try {
-        const data = await fetchAllCategories();
+    if (categories) {
+      setCategories(categories);
+    } else {
+      clearCategories();
+    }
 
-        if (!data.success) {
-          throw new Error("Failed to fetch categories");
-        }
-
-        if (data?.categories) {
-          setCategories(data.categories);
-        } else {
-          clearCategories();
-        }
-      } catch (error) {
-        clearCategories();
-        console.error("Error fetching categories:", error);
-      }
-    };
     getUser();
-    getCategories();
   }, []);
   return <>{children}</>;
 }

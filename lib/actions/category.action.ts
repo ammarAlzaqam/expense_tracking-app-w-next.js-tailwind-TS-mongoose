@@ -54,24 +54,28 @@ export async function fetchAllCategories() {
     const headerStore = await headers();
     const userId = headerStore.get("x-user-id");
     if (!userId) {
-      return {
-        success: false,
-        message: "User ID not found",
-      };
+      throw new Error("User ID not found");
+      // return {
+      //   success: false,
+      //   message: "User ID not found",
+      // };
     }
 
-    const categories = await Category.find({ user: userId }).lean();
+    const categories = await Category.find({ user: userId });
 
-    return {
-      categories: JSON.parse(JSON.stringify(categories)),
-      success: true,
-    };
+    return categories;
+
+    // return {
+    //   categories: JSON.parse(JSON.stringify(categories)),
+    //   success: true,
+    // };
   } catch (error) {
     console.error(error);
-    return {
-      success: false,
-      message: "Something went wrong. Please try again",
-    };
+    throw new Error("Something went wrong. Please try again")
+    // return {
+    //   success: false,
+    //   message: "Something went wrong. Please try again",
+    // };
   }
 }
 

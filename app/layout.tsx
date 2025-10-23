@@ -1,7 +1,6 @@
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import "./globals.css";
 import ToasterProvider from "@/components/providers/ToasterProvider";
-import ZustandProvider from "@/components/providers/ZustandProvider";
 
 export const metadata = {
   title: "expense tracker",
@@ -18,7 +17,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <ToasterProvider>
-            <ZustandProvider>{children}</ZustandProvider>
+            {children}
           </ToasterProvider>
         </ThemeProvider>
       </body>
