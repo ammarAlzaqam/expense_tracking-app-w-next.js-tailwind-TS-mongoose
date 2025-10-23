@@ -31,10 +31,11 @@ export async function createCategory({
     if (exists)
       return { success: false, message: "This slug has already been used" };
 
-    await Category.create({ name, slug, user: userId });
+    const category = await Category.create({ name, slug, user: userId });
 
     revalidatePath(path);
     return {
+      category: JSON.parse(JSON.stringify(category)),
       success: true,
       message: "Category created successfully",
     };
@@ -55,27 +56,16 @@ export async function fetchAllCategories() {
     const userId = headerStore.get("x-user-id");
     if (!userId) {
       throw new Error("User ID not found");
-      // return {
-      //   success: false,
-      //   message: "User ID not found",
-      // };
     }
 
-    const categories = await Category.find({ user: userId });
+    const categories = await Category.find({ user: userId }).sort({
+      createdAt: -1,
+    });
 
     return categories;
-
-    // return {
-    //   categories: JSON.parse(JSON.stringify(categories)),
-    //   success: true,
-    // };
   } catch (error) {
     console.error(error);
-    throw new Error("Something went wrong. Please try again")
-    // return {
-    //   success: false,
-    //   message: "Something went wrong. Please try again",
-    // };
+    throw new Error("Something went wrong. Please try again");
   }
 }
 
@@ -113,6 +103,9 @@ export async function updateCategory({
       {
         name,
         newSlug,
+      },
+      {
+        new: true,
       }
     );
 
@@ -125,6 +118,7 @@ export async function updateCategory({
 
     revalidatePath(path);
     return {
+      category: JSON.parse(JSON.stringify(category)),
       success: true,
       message: "Category updated successfully",
     };
@@ -156,7 +150,10 @@ export async function deleteCategory({
     }
 
     await connectDB();
-    const category = await Category.findOneAndDelete({ slug, user: userId });
+    const category = await Category.findOneAndDelete(
+      { slug, user: userId },
+      { new: true }
+    );
     if (!category) {
       return {
         success: false,
@@ -173,6 +170,7 @@ export async function deleteCategory({
 
     revalidatePath(path);
     return {
+      category: JSON.parse(JSON.stringify(category)),
       success: true,
       message: "Category deleted successfully",
     };

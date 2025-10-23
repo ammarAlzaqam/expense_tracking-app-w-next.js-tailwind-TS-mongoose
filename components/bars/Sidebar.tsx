@@ -20,6 +20,8 @@ import ConfirmDialog from "../shared/confirmDialog";
 import { cn } from "@/lib/utils";
 import slugify from "slugify";
 import { useCategoriesStore } from "@/lib/zustand/categoriesStore";
+import { ImSpinner9 } from "react-icons/im";
+import { FaArrowsSpin } from "react-icons/fa6";
 
 export default function Sidebar() {
   const [open, set] = useState(false);
@@ -83,7 +85,7 @@ const Aside = ({
   return (
     <aside data-state={open} className="sidebar-aside">
       {/*//! Title */}
-      <h3 className="translate-x-1.5 text-heading4 sm:text-heading3 text-light-1">
+      <h3 className="translate-x-1.5 text-heading3 sm:text-heading2 text-light-1">
         Mora Tracker
       </h3>
       {/*//! Links */}
@@ -155,6 +157,7 @@ const Categories = ({
   const [loading, setLoading] = useState(false);
 
   const categories = useCategoriesStore((state) => state.categories);
+  const addCategory = useCategoriesStore((state) => state.addCategory);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -203,6 +206,7 @@ const Categories = ({
       setCategoryName("");
       setCreate(false);
       inputRef.current?.blur();
+      addCategory(data.category);
       toast.success(data.message);
     } catch (error) {
       console.error(error);
@@ -231,14 +235,21 @@ const Categories = ({
       >
         {/*//! left icons (+, X) */}
         <div className="me-5">
-          <Plus className={`size-5 shrink-0 ${create && "hidden"}`} />
+          <Plus
+            className={`size-5 shrink-0 ${(create || loading) && "hidden"}`}
+          />
           <X
             onClick={(e) => {
               e.stopPropagation();
               setCategoryName("");
               setCreate(false);
             }}
-            className={`cursor-pointer size-5 shrink-0 ${!create && "hidden"}`}
+            className={`cursor-pointer size-5 shrink-0 ${
+              (!create || loading) && "hidden"
+            }`}
+          />
+          <ImSpinner9
+            className={`size-5 shrink-0 animate-spin ${!loading && "hidden"}`}
           />
         </div>
         <input
@@ -326,8 +337,13 @@ function CategoryItem({
 }: CategoryItemProps) {
   const { _id, name, slug } = category;
 
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState(name);
   const [categoryNameAfterUpdate, setCategoryNameAfterUpdate] = useState("");
+
+  const editCategory = useCategoriesStore((state) => state.editCategory);
+  const removeCategory = useCategoriesStore((state) => state.removeCategory);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -349,6 +365,9 @@ function CategoryItem({
   const handleUpdateCategory = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
+      setUpdateLoading(true);
+      setUpdate("");
+      inputRef.current?.blur();
 
       if (name.trim() === newCategoryName) {
         return;
@@ -364,16 +383,24 @@ function CategoryItem({
         toast.error(data.message);
         return;
       }
+
+      editCategory(data.category);
       setCategoryNameAfterUpdate(newCategoryName);
       toast.success(data.message);
     } catch (error) {
       console.error("handel update category error: ", error);
       toast.error("Something went wrong. Please try again");
+    } finally {
+      setUpdateLoading(false);
     }
   };
 
   const handleDeleteCategory = async () => {
     try {
+      setDeleteLoading(true);
+      setUpdate("");
+      inputRef.current?.blur();
+
       const data = await deleteCategory({
         slug,
         path,
@@ -384,10 +411,13 @@ function CategoryItem({
         return;
       }
 
+      removeCategory(data.category);
       toast.success(data.message);
     } catch (error) {
       console.error("handel delete category error: ", error);
       toast.error("Something went wrong. Please try again");
+    } finally {
+      setDeleteLoading(false);
     }
   };
 
@@ -421,15 +451,22 @@ function CategoryItem({
       {/*//! delete and tag icon */}
       <div>
         <BiTag
-          className={`size-5 shrink-0 ${edit && update === slug && "hidden"}`}
+          className={`size-5 shrink-0 ${
+            ((edit && update === slug) || deleteLoading) && "hidden"
+          }`}
         />
         <ConfirmDialog onConfirm={handleDeleteCategory}>
           <FaRegTrashAlt
             className={`cursor-pointer size-5 shrink-0 hidden transition hover:scale-110 ${
-              edit && update === slug && "!flex"
+              edit && update === slug && !deleteLoading && "!flex"
             }`}
           />
         </ConfirmDialog>
+        <ImSpinner9
+          className={`animate-spin size-5 shrink-0 ${
+            !deleteLoading && "hidden"
+          }`}
+        />
       </div>
 
       {/*//! Update Input */}
@@ -447,6 +484,7 @@ function CategoryItem({
             if (update === slug) {
               e.currentTarget.form?.requestSubmit();
               setUpdate("");
+              inputRef.current?.blur();
             } else {
               setUpdate(slug);
               setCreate(false);
@@ -457,12 +495,16 @@ function CategoryItem({
           className="sidebar-aside_category-Edit"
         >
           <RiEdit2Fill
-            data-state={update === slug ? "close" : "open"}
+            data-state={updateLoading ? "close" : update === slug ? "close" : "open"}
             className="animate-open_close absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-light-1"
           />
           <MdOutlineCheck
-            data-state={update === slug ? "open" : "close"}
+            data-state={updateLoading ? "close" : update === slug ? "open" : "close"}
             className="animate-open_close absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-light-1"
+          />
+          <FaArrowsSpin
+            data-state={updateLoading ? "open" : "close"}
+            className="animate-spin animate-open_close !duration-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-light-1"
           />
         </button>
       </div>

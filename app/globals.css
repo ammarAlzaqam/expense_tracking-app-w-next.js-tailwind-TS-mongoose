@@ -85,10 +85,10 @@
     scroll-behavior: smooth;
   }
 
-  html,
+  /* html,
   body {
     overscroll-behavior: none;
-  }
+  } */
 
   ::selection {
     background: var(--color-primary-500);
