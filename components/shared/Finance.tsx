@@ -7,6 +7,7 @@ import { useState } from "react";
 import { GoArrowUpRight } from "react-icons/go";
 import { GoArrowDown } from "react-icons/go";
 import { MdMonetizationOn } from "react-icons/md";
+import { ArrowDownCircle, ArrowUpCircle, Tag } from "lucide-react";
 
 export default function Finance({
   income,
@@ -51,9 +52,20 @@ export default function Finance({
         >
           <MdMonetizationOn className="z-1 size-28 text-light-1/5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
 
-          <h1 className="text-heading1 text-primary-500">
-            {formattedAmount(netBalance)}
-          </h1>
+          <div
+            className={`whitespace-nowrap flex items-center justify-center gap-2 font-extrabold ${
+              netBalance < 0 ? "text-red-400" : "text-green-400"
+            }`}
+          >
+            {netBalance < 0 ? (
+              <ArrowDownCircle className="size-8" />
+            ) : (
+              <ArrowUpCircle className="size-8" />
+            )}
+            <p className="text-heading1">
+              {formattedAmount(netBalance)}
+            </p>
+          </div>
           <h3 className="finance-text">Net Balance</h3>
         </div>
 

@@ -7,18 +7,18 @@ export const metadata = {
   description: "ابراهيم وبراء",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
   return (
     <html lang="en" className="bg-dark-1 text-light-1">
       <body>
         <ThemeProvider>
-          <ToasterProvider>
-            {children}
-          </ToasterProvider>
+          <ToasterProvider>{children}</ToasterProvider>
         </ThemeProvider>
       </body>
     </html>
