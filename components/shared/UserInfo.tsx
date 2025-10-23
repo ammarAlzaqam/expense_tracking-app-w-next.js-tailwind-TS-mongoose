@@ -28,6 +28,8 @@ export default function UserInfo({ route }: { route: string }) {
               src={image || "/assets/user.svg"}
               alt="user-info"
               fill
+              placeholder="empty"
+              quality={100}
               className={`rounded-full object-cover ${
                 image === "/assets/user.svg" && "p-2"
               } bg-dark-4 dark:bg-dark-3`}

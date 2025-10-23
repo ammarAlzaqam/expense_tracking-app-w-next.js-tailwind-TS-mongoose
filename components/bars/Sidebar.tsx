@@ -22,6 +22,7 @@ import slugify from "slugify";
 import { useCategoriesStore } from "@/lib/zustand/categoriesStore";
 import { ImSpinner9 } from "react-icons/im";
 import { FaArrowsSpin } from "react-icons/fa6";
+import Image from "next/image";
 
 export default function Sidebar() {
   const [open, set] = useState(false);
@@ -84,6 +85,13 @@ const Aside = ({
 
   return (
     <aside data-state={open} className="sidebar-aside custom-scrollbar">
+      {/*//! Bg image */}
+      <img
+        src="/ibrahem.jpg"
+        alt="ibrahem_logo"
+        className="absolute top-0 left-0 w-full h-full object-cover opacity-15"
+      />
+
       {/*//! Title */}
       <h3 className="translate-x-1.5 text-heading3 sm:text-heading2 text-light-1">
         Mora Tracker
@@ -495,11 +503,15 @@ function CategoryItem({
           className="sidebar-aside_category-Edit"
         >
           <RiEdit2Fill
-            data-state={updateLoading ? "close" : update === slug ? "close" : "open"}
+            data-state={
+              updateLoading ? "close" : update === slug ? "close" : "open"
+            }
             className="animate-open_close absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-light-1"
           />
           <MdOutlineCheck
-            data-state={updateLoading ? "close" : update === slug ? "open" : "close"}
+            data-state={
+              updateLoading ? "close" : update === slug ? "open" : "close"
+            }
             className="animate-open_close absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-light-1"
           />
           <FaArrowsSpin

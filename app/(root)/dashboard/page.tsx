@@ -92,7 +92,7 @@ export default async function DashboardPage({
           </div>
 
           {/*//! Pagination */}
-          <PaginationTransactions nofPages={9} />
+          <PaginationTransactions nofPages={nofPages} />
         </div>
       ) : (
         <p className="text-light-4 text-body font-normal text-center">
