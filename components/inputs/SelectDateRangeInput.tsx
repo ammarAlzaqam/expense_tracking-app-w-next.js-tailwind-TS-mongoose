@@ -51,7 +51,9 @@ export function SelectFromDateInput() {
           <Button
             variant="outline"
             data-empty={!fromDate}
-            className="form-input data-[empty=true]:text-light-3 text-light-1 w-full justify-start text-left font-normal relative"
+            className={`form-input data-[empty=true]:text-light-3 text-light-1 w-full justify-start text-left font-normal relative
+              ${fromDate && "border border-primary-500"}
+              `}
           >
             <CalendarIcon className="text-light-2 mr-2" />
             {fromDate ? (
@@ -135,7 +137,8 @@ export function SelectToDateInput() {
         <Button
           variant="outline"
           data-empty={!toDate}
-          className="form-input data-[empty=true]:text-light-3 text-light-1 w-full justify-start text-left font-normal relative"
+          className={`form-input data-[empty=true]:text-light-3 text-light-1 w-full justify-start text-left font-normal relative 
+            ${toDate && "border-1 border-primary-500"}`}
         >
           <CalendarIcon className="text-light-2 mr-2" />
           {toDate ? (

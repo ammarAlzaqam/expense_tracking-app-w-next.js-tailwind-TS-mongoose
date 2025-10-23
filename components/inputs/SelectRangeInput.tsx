@@ -68,7 +68,9 @@ export default function SelectRangeInput() {
 
   return (
     <Select value={range} onValueChange={handelValueChange}>
-      <SelectTrigger className="form-input w-full">
+      <SelectTrigger className={`form-input w-full
+        ${range && "border border-primary-500"}
+        `}>
         <SelectValue placeholder="Without Range" />
       </SelectTrigger>
       <SelectContent className="text-light-2 bg-dark-2 border border-dark-2/50">

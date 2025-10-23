@@ -8,7 +8,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ClearSelectionsButton from "@/components/shared/ClearSelectionsButton";
 import { HiPlus } from "react-icons/hi";
-import Sidebar from "@/components/bars/Sidebar";
 import FilterInputs from "@/components/inputs/filterInputs";
 
 export default async function DashboardPage({
@@ -35,7 +34,8 @@ export default async function DashboardPage({
   } = await searchParams;
   await connectDB();
   const categoryData = await Category.findOne({ slug: category });
-  const transactionPromise = fetchTransactions({
+
+  const {transactions, nofPages} = await fetchTransactions({
     pageNumber: 1,
     searchString,
     limit: 20,
@@ -46,13 +46,6 @@ export default async function DashboardPage({
     fromDate: fromDate ? new Date(fromDate) : undefined,
     toDate: toDate ? new Date(toDate) : undefined,
   });
-
-  const categoriesPromise = fetchAllCategories();
-
-  const [{ transactions, nofPages }, categories] = await Promise.all([
-    transactionPromise,
-    categoriesPromise,
-  ]);
 
   return (
     <section className="space-y-7">
@@ -67,7 +60,6 @@ export default async function DashboardPage({
         </a>
       </div>
 
-      <Sidebar categories={JSON.parse(JSON.stringify(categories))} />
 
       {/*//! Create transaction float button */}
       <Button
@@ -83,7 +75,7 @@ export default async function DashboardPage({
       </Button>
 
       {/*//! Filter Inputs */}
-      <FilterInputs categories={JSON.parse(JSON.stringify(categories))} />
+      <FilterInputs />
 
       {/*//! Divider */}
       <div id="transaction" className="divider" />
@@ -95,7 +87,6 @@ export default async function DashboardPage({
             <TransactionCard
               key={t._id}
               transaction={t}
-              categories={categories || []}
               type="dashboard"
             />
           ))}

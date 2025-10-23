@@ -193,6 +193,7 @@ interface SelectInputProps {
   onChange: (value: string) => void;
   label: string;
   items: Item[];
+  className?: string;
 }
 
 const CLEAR_VALUE = "clear-selection";
@@ -202,6 +203,7 @@ export function SelectInput({
   onChange,
   label,
   items,
+  className = "",
 }: SelectInputProps) {
   const clearOpt: Item = { _id: CLEAR_VALUE, name: "Without category" };
 
@@ -217,7 +219,7 @@ export function SelectInput({
 
   return (
     <Select value={value} onValueChange={handelValueChange}>
-      <SelectTrigger className="form-input w-full">
+      <SelectTrigger className={`${className} form-input w-full`}>
         <SelectValue placeholder="Without category" />
       </SelectTrigger>
       <SelectContent className="z-[120] text-light-2 bg-dark-2 border border-dark-2/50">

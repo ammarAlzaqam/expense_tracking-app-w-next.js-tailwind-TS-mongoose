@@ -25,6 +25,7 @@ import toast from "react-hot-toast";
 import { usePathname } from "next/navigation";
 import { deleteTransaction } from "@/lib/actions/transaction.action";
 import { Button } from "../ui/button";
+import { useCategoriesStore } from "@/lib/zustand/categoriesStore";
 
 type Category = {
   _id: string;
@@ -36,7 +37,6 @@ interface TransactionCommandsProps {
   amount: number;
   category: Category;
   startDate: Date;
-  categories: Category[];
 }
 export default function TransactionCommands({
   _id,
@@ -44,13 +44,14 @@ export default function TransactionCommands({
   amount,
   category,
   startDate,
-  categories,
 }: TransactionCommandsProps) {
   const [loading, setLoading] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const path = usePathname();
+
+  const categories = useCategoriesStore((state) => state.categories);
 
   const handelDeleteTransaction = async () => {
     try {
@@ -94,7 +95,7 @@ export default function TransactionCommands({
             amount={amount}
             category={category?._id?.toString() || ""}
             startDate={startDate}
-            categories={categories}
+            categories={categories ?? []}
             setShowUpdateModal={setShowUpdateModal}
           />
         )}

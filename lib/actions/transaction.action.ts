@@ -233,11 +233,55 @@ export async function deleteTransaction(transactionId: string, path: string) {
 export async function getUserFinanceSummary() {
   try {
     await connectDB();
+    const headerStore = await headers();
+    const userId = headerStore.get("x-user-id");
+    if (!userId) {
+      throw new Error("Failed to fetch transactions: User ID not found");
+    }
+
+    const summary = await Transaction.aggregate([
+      {
+        $match: { user: new mongoose.Types.ObjectId(userId) },
+      },
+      {
+        $group: {
+          _id: null,
+          income: {
+            $sum: {
+              $cond: [
+                {
+                  $gt: ["$amount", 0],
+                },
+                "$amount",
+                0,
+              ],
+            },
+          },
+          expenses: {
+            $sum: {
+              $cond: [
+                {
+                  $lt: ["$amount", 0],
+                },
+                "$amount",
+                0,
+              ],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          income: 1,
+          expenses: 1,
+          netBalance: { $add: ["$income", "$expenses"] },
+        },
+      },
+    ]);
+    return summary[0] || { netBalance: 0, income: 0, expenses: 0 };
   } catch (error) {
     console.error("get user finance error: ", error);
-    return {
-      success: false,
-      message: "Something went wrong: Please try again",
-    };
+    throw new Error("Failed to fetch transactions: Something went wrong");
   }
 }

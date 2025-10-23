@@ -33,6 +33,8 @@ const categorySchema = new mongoose.Schema(
   }
 );
 
+categorySchema.index({ user: 1 });
+
 const Category =
   mongoose.models.Category ||
   mongoose.model<Category>("Category", categorySchema);

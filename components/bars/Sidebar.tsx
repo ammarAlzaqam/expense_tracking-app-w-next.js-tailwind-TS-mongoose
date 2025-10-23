@@ -19,13 +19,9 @@ import {
 import ConfirmDialog from "../shared/confirmDialog";
 import { cn } from "@/lib/utils";
 import slugify from "slugify";
+import { useCategoriesStore } from "@/lib/zustand/categoriesStore";
 
-type Category = {
-  _id: string;
-  name: string;
-  slug: string;
-};
-export default function Sidebar({ categories }: { categories: Category[] }) {
+export default function Sidebar() {
   const [open, set] = useState(false);
 
   useEffect(() => {
@@ -67,7 +63,7 @@ export default function Sidebar({ categories }: { categories: Category[] }) {
 
       {/*//! Sidebar */}
       <section data-state={open} className="sidebar">
-        <Aside open={open} set={set} categories={categories} />
+        <Aside open={open} set={set} />
       </section>
     </>
   );
@@ -76,11 +72,9 @@ export default function Sidebar({ categories }: { categories: Category[] }) {
 const Aside = ({
   open,
   set,
-  categories,
 }: {
   open: boolean;
   set: (value: boolean) => void;
-  categories: Category[];
 }) => {
   const [edit, setEdit] = useState(false);
 
@@ -96,11 +90,12 @@ const Aside = ({
       <div>
         {dashboardSidebarLinks.map(({ label, Icon, route }) => {
           const isActive =
-            (pathname.includes(route) && route === "/dashboard") ||
+            (pathname.includes(route) && route !== "/dashboard") ||
             pathname === route;
           return (
             <Link
               href={route}
+              onClick={() => set(false)}
               key={label}
               data-state={isActive}
               className="sidebar-aside_link"
@@ -138,25 +133,17 @@ const Aside = ({
       </div>
 
       {/*//! Categories */}
-      <Categories
-        categories={categories}
-        edit={edit}
-        setEdit={setEdit}
-        set={set}
-        open={open}
-      />
+      <Categories edit={edit} setEdit={setEdit} set={set} open={open} />
     </aside>
   );
 };
 
 const Categories = ({
-  categories,
   edit,
   set,
   open,
   setEdit,
 }: {
-  categories: Category[];
   edit: boolean;
   open: boolean;
   set: (value: boolean) => void;
@@ -166,6 +153,8 @@ const Categories = ({
   const [create, setCreate] = useState(false);
   const [categoryName, setCategoryName] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const categories = useCategoriesStore((state) => state.categories);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -271,7 +260,7 @@ const Categories = ({
         </button>
       </form>
 
-      {categories.map((category) => (
+      {categories?.map((category) => (
         <CategoryItem
           key={category._id}
           category={category}
@@ -310,6 +299,11 @@ const Categories = ({
 };
 
 //! Category Item
+type Category = {
+  _id: string;
+  name: string;
+  slug: string;
+};
 interface CategoryItemProps {
   category: Category;
   edit: boolean;

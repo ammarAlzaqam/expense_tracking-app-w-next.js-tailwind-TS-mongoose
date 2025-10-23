@@ -21,19 +21,13 @@ import { Shell } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { createTransaction } from "@/lib/actions/transaction.action";
 import { SelectInput } from "../ui/select";
+import { useCategoriesStore } from "@/lib/zustand/categoriesStore";
 
-type Category = {
-  _id: string;
-  name: string;
-};
-interface CreateCategoryFormProps {
-  categories: Category[];
-}
-export default function CreateTheTransactionForm({
-  categories,
-}: CreateCategoryFormProps) {
+export default function CreateTheTransactionForm() {
   const [loading, setLoading] = React.useState(false);
   const router = useRouter();
+
+  const categories = useCategoriesStore((state) => state.categories);
 
   const form = useForm({
     defaultValues: {
@@ -129,7 +123,7 @@ export default function CreateTheTransactionForm({
                   value={field.value || ""}
                   onChange={field.onChange}
                   label={"categories"}
-                  items={categories}
+                  items={categories || []}
                 />
               </FormControl>
               <FormMessage className="form-msg" />

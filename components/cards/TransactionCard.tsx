@@ -15,13 +15,11 @@ interface TransactionCardProps {
     category: Category;
     startDate: Date;
   };
-  categories?: Category[];
   type?: string;
 }
 
 export default function TransactionCard({
   transaction: { name, amount, category, startDate, _id },
-  categories = [],
   type = "",
 }: TransactionCardProps) {
   const isExpense = amount < 0;
@@ -65,7 +63,6 @@ export default function TransactionCard({
               amount={amount}
               category={category ? JSON.parse(JSON.stringify(category)) : {}}
               startDate={startDate}
-              categories={JSON.parse(JSON.stringify(categories))}
             />
           )}
         </div>

@@ -18,11 +18,11 @@ import { FaSort } from "react-icons/fa";
 import { useSearchParams } from "next/navigation";
 import ClearSelectionsButton from "../shared/ClearSelectionsButton";
 import { Button } from "../ui/button";
-import { IoFilterOutline } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
+import { IoFilterSharp } from "react-icons/io5";
 
-export default function FilterInputs({ categories }: { categories: any }) {
+export default function FilterInputs() {
   const searchParams = useSearchParams();
   const [open, set] = useState(false);
 
@@ -32,7 +32,7 @@ export default function FilterInputs({ categories }: { categories: any }) {
       <SearchInput />
 
       <Button className={`form-btn duration-500 ${!open && "m-0"}`} onClick={() => set((prev) => !prev)}>
-        <IoFilterOutline className={`${open && "hidden"}`} />{" "}
+        <IoFilterSharp className={`${open && "hidden"}`} />{" "}
         <IoMdClose className={`${!open && "hidden"}`} /> Filters
       </Button>
 
@@ -83,7 +83,7 @@ export default function FilterInputs({ categories }: { categories: any }) {
           </div>
         </div>
 
-        {/*//* Select DateRange Input */}
+        {/*//* Select Range & Category Input */}
         <div className="w-full flex sm:items-center max-sm:flex-col gap-3">
           <p className="flex items-center">
             <VscListSelection className="text-primary-500" />
@@ -93,7 +93,6 @@ export default function FilterInputs({ categories }: { categories: any }) {
           {/*// Select Category Input */}
           <div className="flex-1">
             <SelectCategoryInput
-              categories={JSON.parse(JSON.stringify(categories)) || []}
             />
           </div>
 

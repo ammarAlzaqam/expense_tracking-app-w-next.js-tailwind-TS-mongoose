@@ -40,6 +40,8 @@ const transactionSchema = new mongoose.Schema<Transaction>(
   }
 );
 
+transactionSchema.index({ user: 1 });
+
 const Transaction =
   mongoose.models.Transaction ||
   mongoose.model<Transaction>("Transaction", transactionSchema);

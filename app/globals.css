@@ -121,16 +121,18 @@
 }
 .finance-light::after {
   content: "";
-  @apply absolute -top-5 left-1/2 -translate-x-1/2 w-1/2 h-1;
-  box-shadow: 0 55px 50px 1px #ffffff;
+  @apply absolute -top-5 left-1/2 -translate-x-1/2 w-1/2 h-0;
+  box-shadow: 0 55px 50px 2px #ffffff;
 }
 
 .finance-light::before {
   content: "";
-  @apply absolute -bottom-5 left-1/2 -translate-x-1/2 w-1/2 h-1;
-  box-shadow: 0 55px 50px 1px #ffffff;
+  @apply absolute -bottom-5 left-1/2 -translate-x-1/2 w-1/2 h-0 transition-all duration-300;
+  box-shadow: 0 55px 50px 2px #ffffff;
 }
-
+.finance-light[data-state="false"]::before {
+  @apply translate-y-12;
+}
 
 @layer utility {
   .animate-open_close {
@@ -242,7 +244,7 @@
   }
 
   .form-input {
-    @apply focus-visible:!ring-0 w-full focus:outline-0 border-none !bg-dark-2 text-light-2;
+    @apply focus-visible:!ring-0 w-full focus:outline-0 border-transparent !bg-dark-2 text-light-2;
   }
 
   .form-label {

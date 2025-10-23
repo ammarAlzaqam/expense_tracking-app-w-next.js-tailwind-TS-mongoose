@@ -52,16 +52,26 @@ export async function fetchAllCategories() {
     await connectDB();
 
     const headerStore = await headers();
-    const userId = await headerStore.get("x-user-id");
+    const userId = headerStore.get("x-user-id");
     if (!userId) {
-      throw new Error("Failed to fetch categories: userId not found");
+      return {
+        success: false,
+        message: "User ID not found",
+      };
     }
 
-    const categories = await Category.find({ user: userId });
+    const categories = await Category.find({ user: userId }).lean();
 
-    return categories;
+    return {
+      categories: JSON.parse(JSON.stringify(categories)),
+      success: true,
+    };
   } catch (error) {
     console.error(error);
+    return {
+      success: false,
+      message: "Something went wrong. Please try again",
+    };
   }
 }
 
