@@ -4,7 +4,7 @@ import ToasterProvider from "@/components/providers/ToasterProvider";
 
 export const metadata = {
   title: "expense tracker",
-  description: "expense tracking app",
+  description: "ابراهيم وبراء",
 };
 
 export default function RootLayout({
