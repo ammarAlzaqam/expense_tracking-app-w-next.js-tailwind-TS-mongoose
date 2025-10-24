@@ -82,6 +82,7 @@ const Aside = ({
   const [edit, setEdit] = useState(false);
 
   const pathname = usePathname();
+  const router = useRouter();
 
   return (
     <aside data-state={open} className="sidebar-aside custom-scrollbar">
@@ -89,42 +90,45 @@ const Aside = ({
       <img
         src="/ibrahem.jpg"
         alt="ibrahem_logo"
-        className="absolute top-0 left-0 w-full h-full object-cover opacity-15"
+        className=" absolute top-0 left-0 w-full h-full object-cover opacity-15"
       />
 
       {/*//! Title */}
       <h3 className="translate-x-1.5 text-heading3 sm:text-heading2 text-light-1">
         Mora Tracker
       </h3>
+
       {/*//! Links */}
-      <div>
+      <div className="!z-20">
         {dashboardSidebarLinks.map(({ label, Icon, route }) => {
           const isActive =
             (pathname.includes(route) && route !== "/dashboard") ||
             pathname === route;
           return (
-            <Link
-              href={route}
-              onClick={() => set(false)}
+            <button
+              onClick={() => {
+                router.push(route);
+                set(false);
+              }}
               key={label}
               data-state={isActive}
-              className="sidebar-aside_link"
+              className="sidebar-aside_link w-full !z-20"
             >
-              <Icon className="size-5" />
-              <p className="text-body sm:text-heading4">{label}</p>
-            </Link>
+              <Icon className="size-5 !z-20" />
+              <p className="text-body sm:text-heading4 !z-20">{label}</p>
+            </button>
           );
         })}
       </div>
 
-      {/*//! Head(title, edit) Categories */}
+      {/*//! Head(title('category'), edit) Categories */}
       <div className="px-4 space-y-5">
         {/*//* Divider */}
-        <div className="divider bg-light-3/50"></div>
+        <div className="divider bg-light-3/50" />
 
         {/*//* Header (title, edit) */}
         <div className="flex gap-5 justify-between text-light-1">
-          <p className="text-base">Categories</p>
+          <p className="text-base z-20">Categories</p>
           <button
             onClick={() => setEdit((prev) => !prev)}
             data-state={edit}

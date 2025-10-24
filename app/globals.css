@@ -219,7 +219,7 @@
   }
 
   .sidebar-aside {
-    @apply h-full w-[85vw] sm:w-[400px] p-3 bg-dark-2 transition duration-300 overflow-y-auto space-y-3
+    @apply h-full w-[85vw] sm:w-[400px] p-3 bg-dark-1 transition duration-300 overflow-y-auto space-y-3
         data-[state=false]:opacity-0 data-[state=false]:scale-95;
   }
 
