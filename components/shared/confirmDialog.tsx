@@ -45,7 +45,7 @@ export default function ConfirmDialog({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
-      <AlertDialogContent className="z-[100] w-11/12 border-none shadow-accent-foreground bg-dark-1">
+      <AlertDialogContent className="z-[200] w-11/12 border-none shadow-accent-foreground bg-dark-1">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-light-1">{title}</AlertDialogTitle>
           <AlertDialogDescription className="max-xs:text-small text-light-2">

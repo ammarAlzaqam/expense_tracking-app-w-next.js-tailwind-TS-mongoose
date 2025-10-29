@@ -5,6 +5,8 @@ interface User {
   username: string;
   email: string;
   image: string;
+  isPremium: boolean;
+  admin: boolean;
 }
 interface UserState {
   user: User | null;

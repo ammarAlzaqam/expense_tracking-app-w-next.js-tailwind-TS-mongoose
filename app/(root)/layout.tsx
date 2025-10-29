@@ -2,6 +2,7 @@ import Bottombar from "@/components/bars/Bottombar";
 import Topbar from "@/components/bars/Topbar";
 import ZustandProvider from "@/components/providers/ZustandProvider";
 import { fetchAllCategories } from "@/lib/actions/category.action";
+import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const categories = await fetchAllCategories();
+  const headerStore = await headers();
   return (
     <ZustandProvider categories={JSON.parse(JSON.stringify(categories))}>
       <Topbar />

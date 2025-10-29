@@ -24,7 +24,7 @@ export function PaginationTransactions({ nofPages = 1 }: { nofPages: number }) {
     const params = new URLSearchParams(searchParams);
     params.set(
       "pageNumber",
-      pageNumber > 0 ? `${pageNumber - 1}` : `${pageNumber}`
+      pageNumber > 1 ? `${pageNumber - 1}` : `${pageNumber}`
     );
     router.replace(`?${params.toString()}`);
   };

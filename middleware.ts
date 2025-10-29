@@ -7,7 +7,6 @@ export async function middleware(req: NextRequest) {
   const isAuthPage =
     pathname.startsWith("/signin") || pathname.startsWith("/signup");
 
-  const isProtectedPage = pathname === "/" || pathname === "/dashboard";
   const data = await isAuthenticated(req);
   if (data.success) {
     if (isAuthPage) {
@@ -26,7 +25,8 @@ export async function middleware(req: NextRequest) {
   }
 
   const requestHeaders = new Headers(req.headers);
-  requestHeaders.set("x-user-id", data.userId!);
+  requestHeaders.set("x-user-id", data.userId || "");
+  requestHeaders.set("x-user-isPremium", data.isPremium?.toString() || "");
 
   return NextResponse.next({
     request: {
@@ -43,6 +43,6 @@ export const config = {
     "/signup",
     "/",
     "/dashboard/:path*",
-    "/profile/:path*"
+    "/profile/:path*",
   ],
 };

@@ -18,12 +18,23 @@ export async function createCategory({
 }: CreateCategoryParams) {
   try {
     const headerStore = await headers();
+    const isPremium = headerStore.get("x-user-isPremium") === "true";
     const userId = headerStore.get("x-user-id");
     if (!userId) {
       return {
         success: false,
         message: "UserId not found",
       };
+    }
+
+    if (!isPremium) {
+      const categoriesCount = await Category.countDocuments({ user: userId });
+      if(categoriesCount >= 1) {
+        return {
+          success: false,
+          message: "Category limit reached. Upgrade to continue.",
+        };
+      }
     }
 
     await connectDB();

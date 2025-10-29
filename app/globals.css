@@ -186,7 +186,7 @@
   /*//! Bars */
   /*//* Topbar */
   .topbar {
-    @apply z-20 fixed w-full bg-dark-1 px-5 py-3 flex items-center justify-between;
+    @apply z-[99] fixed w-full bg-dark-1 px-5 py-3 flex items-center justify-between;
   }
 
   .topbar-link {
@@ -208,13 +208,13 @@
 
   /*//! Sidebar  */
   .sidebar {
-    @apply fixed z-[60] top-0 left-0 h-[100dvh] transition duration-300 
+    @apply fixed z-[120] top-0 left-0 h-[100dvh] transition duration-300 
           data-[state=false]:-translate-x-[85vw] data-[state=false]:sm:-translate-x-[400px];
   }
 
   .sidebar-overlay {
     @apply transition-all duration-300 
-        z-[55] h-full fixed inset-0 bg-black/70
+        z-[110] h-full fixed inset-0 bg-black/70
         data-[state=false]:opacity-0 data-[state=false]:pointer-events-none;
   }
 
@@ -224,7 +224,7 @@
   }
 
   .sidebar-aside_btn {
-    @apply fixed z-[60] size-10 top-0 sm:top-2 right-1 cursor-pointer p-2 rounded-xl transition duration-300
+    @apply fixed z-[90] size-10 top-0 sm:top-2 right-1 cursor-pointer p-2 rounded-xl transition duration-300
         data-[state=false]:translate-y-16 data-[state=false]:sm:translate-y-16 data-[state=false]:bg-dark-1/50 data-[state=false]:backdrop-blur-md;
   }
 

@@ -79,3 +79,12 @@ export const updateTransactionValidationSchema = z.object({
   category: z.string().optional(),
   startDate: z.date({ message: "Start date is required" }),
 });
+
+export const upgradeToPremiumValidationSchema = z.object({
+  code: z
+    .string()
+    .regex(/^PREM-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/, {
+      message:
+        "Invalid code format.",
+    }),
+});

@@ -34,7 +34,7 @@ export default function CreateTheTransactionForm() {
       name: "",
       amount: "",
       category: "",
-      startDate: undefined,
+      startDate: new Date(),
     },
     resolver: zodResolver(createTransactionValidationSchema),
   });

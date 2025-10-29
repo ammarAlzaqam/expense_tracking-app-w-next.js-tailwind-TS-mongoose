@@ -1,9 +1,7 @@
 import CreateTheTransactionForm from "@/components/forms/CreateTransactionForm";
 import { Button } from "@/components/ui/button";
-import { fetchAllCategories } from "@/lib/actions/category.action";
 import { BadgeDollarSign } from "lucide-react";
 import Link from "next/link";
-import { MdClose } from "react-icons/md";
 
 export default async function createTransactionPage() {
   return (

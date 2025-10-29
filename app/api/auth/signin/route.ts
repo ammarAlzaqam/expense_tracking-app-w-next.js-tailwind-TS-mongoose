@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     }
 
     //! create token /w jose && store it in cookie
-    await createAndStoreTokenInCookie(user._id);
+    await createAndStoreTokenInCookie(user._id, user.isPremium);
 
     return NextResponse.json(
       { success: true, message: "Signin successfully" },

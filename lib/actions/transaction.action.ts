@@ -26,12 +26,25 @@ export async function createTransaction({
     await connectDB();
 
     const headerStore = await headers();
+    const isPremium = headerStore.get("x-user-isPremium") === "true";
     const userId = headerStore.get("x-user-id");
     if (!userId) {
       return {
         success: false,
         message: "Failed to create transaction: userId not found",
       };
+    }
+
+    if (!isPremium) {
+      const transactionsCount = await Transaction.countDocuments({
+        user: userId,
+      });
+      if (transactionsCount >= 2) {
+        return {
+          success: false,
+          message: "Transaction limit reached. Upgrade to continue.",
+        };
+      }
     }
 
     let categoryId = null;

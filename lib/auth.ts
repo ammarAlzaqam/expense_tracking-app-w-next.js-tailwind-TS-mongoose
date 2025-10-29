@@ -15,10 +15,11 @@ export async function isAuthenticated(req: NextRequest) {
     );
 
     const userId = payload.userId as string;
+    const isPremium = payload.isPremium as boolean;
     if (!userId)
       return { success: false, message: "Not Authorized: token not valid" };
 
-    return { success: true, userId };
+    return { success: true, userId, isPremium };
   } catch (error) {
     console.error(`Not Authorized: ${error}`);
     return { success: false, message: "Not Authorized" };

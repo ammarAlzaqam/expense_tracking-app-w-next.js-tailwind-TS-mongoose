@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     });
 
     //! create token /w jose && store it in cookie
-    await createAndStoreTokenInCookie(newUser._id);
+    await createAndStoreTokenInCookie(newUser._id, newUser.isPremium);
 
     return NextResponse.json(
       { success: true, message: "Signup successfully" },

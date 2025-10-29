@@ -36,7 +36,7 @@ export function DateInput({
           {value ? format(value, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
+      <PopoverContent className="w-auto p-0 z-[1000]">
         <Calendar
           className="text-light-2 !bg-dark-2"
           mode="single"

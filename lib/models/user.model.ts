@@ -6,6 +6,7 @@ interface User {
   email: string;
   image: string;
   password: string;
+  isPremium: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -31,6 +32,11 @@ const userSchema = new mongoose.Schema<User>(
     password: {
       type: String,
       required: true,
+    },
+
+    isPremium: {
+      type: Boolean,
+      default: false,
     },
   },
   {

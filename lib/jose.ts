@@ -1,8 +1,14 @@
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
 
-export async function createAndStoreTokenInCookie(userId: string) {
-  const token = await new SignJWT({ userId: userId.toString() })
+export async function createAndStoreTokenInCookie(
+  userId: string,
+  isPremium: boolean
+) {
+  const token = await new SignJWT({
+    userId: userId.toString(),
+    isPremium: isPremium,
+  })
     .setExpirationTime("1d")
     .setProtectedHeader({ alg: "HS256" })
     .sign(new TextEncoder().encode(process.env.JWT_SECRET || "SECRET_@JWT#"));

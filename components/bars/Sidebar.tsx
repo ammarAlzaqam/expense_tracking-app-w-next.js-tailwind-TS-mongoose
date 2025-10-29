@@ -368,7 +368,11 @@ function CategoryItem({
       return;
     }
     const params = new URLSearchParams(searchParams);
-    params.set("category", slug);
+    if (isActive) {
+      params.delete("category");
+    } else {
+      params.set("category", slug);
+    }
 
     set(false);
     router.push(`?${params.toString()}`, { scroll: false });

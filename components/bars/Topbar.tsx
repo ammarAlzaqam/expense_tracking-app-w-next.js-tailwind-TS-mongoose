@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, LogOut, Moon, Sun } from "lucide-react";
+import { LogOut, Moon, Sun } from "lucide-react";
 import Image from "next/image";
 import { useTheme } from "../providers/ThemeProvider";
 import Link from "next/link";
@@ -9,8 +9,15 @@ import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { sidebarLinks } from "@/constants";
 import { useUserStore } from "@/lib/zustand/userStore";
+import Upgrade from "../overlays/Upgrade";
+import { FaStar } from "react-icons/fa";
+import GenerateUpgradeCode from "../overlays/GenerateUpgradeCode";
+import { useEffect, useState } from "react";
 
 export default function Topbar() {
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+
   const { darkMode, setDarkMode } = useTheme();
   const path = usePathname();
   const route = useRouter();
@@ -25,13 +32,15 @@ export default function Topbar() {
     route.refresh();
   };
 
+  if (!hydrated || !user) return <header className="topbar animate-pulse bg-dark-3 min-h-16"></header>;
+
   return (
     <header className="topbar">
       {/*//! App logo & name */}
       <div className="flex items-center gap-2">
         <div className="shrink-0 relative h-8 w-8 sm:h-11 sm:w-11">
           <Image
-            src={user?.image || "/assets/user.svg"}
+            src={user?.image ? user.image : "/assets/user.svg"}
             alt="logo"
             fill
             className={`rounded-full object-cover ${
@@ -40,9 +49,16 @@ export default function Topbar() {
           />
         </div>
 
-        <p className="text-heading4 sm:text-heading3 text-light-1 line-clamp-1">
-          {user?.username ?? ""}
-        </p>
+        <div className="flex items-center gap-1">
+          <p className="text-heading4 max-w-[70px] sm:max-w-[200px] sm:text-heading3 text-light-1 line-clamp-1">
+            {user?.username ?? ""}
+          </p>
+          {user?.isPremium && (
+            <span>
+              <FaStar className="size-5 text-secondary-500" />
+            </span>
+          )}
+        </div>
       </div>
 
       {/*//! links */}
@@ -78,6 +94,13 @@ export default function Topbar() {
 
       {/*//! Right buttons (theme, logout)  */}
       <div className="flex gap-5 items-center">
+        {/*//* Upgrade btn */}
+        {user?.admin ? (
+          <GenerateUpgradeCode />
+        ) : (
+          !user?.isPremium && <Upgrade />
+        )}
+
         {/*//* Theme Switcher */}
         <div
           onClick={() => {
